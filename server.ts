@@ -1,30 +1,23 @@
 
-import { serve } from "https://deno.land/std@0.135.0/http/server.ts";
-import {
-    Status,
-    STATUS_TEXT,
-  } from "https://deno.land/std@0.135.0/http/http_status.ts";
+import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import db from './db.ts'
 
-const handler = async (req: Request): Promise<Response> => {
-    const url = new URL(req.url);
-    
-    switch (url.pathname) {
-        case '/places':
-            if (req.method === 'GET') {
-                const places = await db.list();
-                return new Response(JSON.stringify(places));
-            } 
-            // @TODO POST, PUT
-        case '/events':
-            return new Response('todo will return events')
-        default:
-            return new Response(STATUS_TEXT.get(Status.NotFound), {status:Status.NotFound})
-    }  }
+
+const router = new Router();
+router
+  .get("/places", async (context) => {
+    const places = await db.list();
+    context.response.body = JSON.stringify(places);
+  }) // @TODO: POST, PUT, DELETE
+  .get("/events", async (context) => {
+    context.response.body = 'TODO'
+  })
+
+
+const app = new Application();
+app.use(router.routes());
+app.use(router.allowedMethods());
 
 
 await db.init();
-serve(handler, { port: 4242 });
-
-console.log('Server started!')
-
+await app.listen({ port: 4242 });

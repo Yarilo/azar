@@ -2,6 +2,8 @@ import { Model, DataTypes } from 'https://deno.land/x/denodb/mod.ts';
 
 export type PlaceFields = {
   readonly id?: any,
+  readonly createdAt?: string; // Correct type?
+  readonly updatedAt?: string;
   name: string,
   website: string,
   address:string,
@@ -14,7 +16,7 @@ class Place extends Model {
         id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement:true,
       },
       name: DataTypes.STRING,
       website: DataTypes.STRING,

@@ -29,4 +29,4 @@ async function list (): Promise<any> { // @TODO: Correct type
   return Place.all() // @TODO: Return only necessary fields
 }
 
-export default {init, list};
+export default { init, list };
