@@ -11,16 +11,20 @@ const handler = async (req: Request): Promise<Response> => {
     
     switch (url.pathname) {
         case '/places':
-            const places = await db.list();
-            console.log('places', places)
-            return new Response(places);
+            if (req.method === 'GET') {
+                const places = await db.list();
+                return new Response(JSON.stringify(places));
+            } 
+            // @TODO POST, PUT
         case '/events':
             return new Response('todo will return events')
         default:
             return new Response(STATUS_TEXT.get(Status.NotFound), {status:Status.NotFound})
     }  }
 
-console.log('Server started!')
 
 await db.init();
 serve(handler, { port: 4242 });
+
+console.log('Server started!')
+
