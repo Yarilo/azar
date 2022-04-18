@@ -1,34 +1,34 @@
 
 import { Application, Router, Status } from "https://deno.land/x/oak/mod.ts";
 import db from './db.ts'
-import {  PlaceFields } from './models.ts'
+import { Place, PlaceFields } from './models/place.ts'
 
 
 const router = new Router();
 router
   .get("/places", async (context) => {
-    const places = await db.listPlaces();
+    const places = await Place.list();
     context.response.body = JSON.stringify(places);
   })
   .get("/places/:id", async (context) => {
     const { id = '' } = context.params;
-    const place = await db.findPlaceById(id);
+    const place = await Place.findById(id);
     context.response.body = place;
  
   })
   .post("/places", async (context) => {
     const fields: PlaceFields = await context.request.body({ type:'json'  }).value
-    const newPlace = await db.createPlace(fields);
+    const newPlace = await Place.createPlace(fields);
     context.response.body = newPlace;
   })
   .put("/places/:id", async (context) => {
     const { id = '' } = context.params;
     const fields: PlaceFields = await context.request.body({ type:'json'  }).value
-    const updatedPlace = await db.updatePlace(id, fields);
+    const updatedPlace = await Place.updatePlace(id, fields);
     context.response.body = updatedPlace;
   })
   .delete("/places/:id", async (context) => {
-    await db.deletePlace(context.params.id);
+    await Place.deletePlace(context.params.id);
     context.response.status = Status.OK
   })
   // @TODO: events
