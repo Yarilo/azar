@@ -42,18 +42,18 @@ class Event extends Model {
     return await this.find(id);
   }
 
-  static async createEvent(eventFields: EventFields) {
+  static async add(eventFields: EventFields) {
     return await this.create(eventFields)
   }
 
-  static async updateEvent(id: string, fields: EventFields): Promise < Model > {
+  static async edit(id: string, fields: EventFields): Promise < Model > {
     await this.where('id', id).update({
       ...fields
     });
     return this.find(id);
   }
 
-  static async deleteEvent(id: string): Promise < Model | Model[] > {
+  static async remove(id: string): Promise < Model | Model[] > {
     return await this.deleteById(id)
   }
 

@@ -19,17 +19,17 @@ router
   })
   .post("/places", async (context) => {
     const fields: PlaceFields = await context.request.body({ type:'json'  }).value
-    const newPlace = await Place.createPlace(fields);
+    const newPlace = await Place.add(fields);
     context.response.body = newPlace;
   })
   .put("/places/:id", async (context) => {
     const { id = '' } = context.params;
     const fields: PlaceFields = await context.request.body({ type:'json'  }).value
-    const updatedPlace = await Place.updatePlace(id, fields);
+    const updatedPlace = await Place.edit(id, fields);
     context.response.body = updatedPlace;
   })
   .delete("/places/:id", async (context) => {
-    await Place.deletePlace(context.params.id);
+    await Place.remove(context.params.id);
     context.response.status = Status.OK
   })
 
@@ -47,17 +47,17 @@ router
   })
   .post("/events", async (context) => {
     const fields: EventFields = await context.request.body({ type:'json'  }).value
-    const newPlace = await Event.createEvent(fields);
+    const newPlace = await Event.add(fields);
     context.response.body = newPlace;
   })
   .put("/events/:id", async (context) => {
     const { id = '' } = context.params;
     const fields: EventFields = await context.request.body({ type:'json'  }).value
-    const updatedPlace = await Event.updateEvent(id, fields);
+    const updatedPlace = await Event.edit(id, fields);
     context.response.body = updatedPlace;
   })
   .delete("/events/:id", async (context) => {
-    await Event.deleteEvent(context.params.id);
+    await Event.remove(context.params.id);
     context.response.status = Status.OK
   })
 

@@ -35,18 +35,18 @@ class Place extends Model {
     return await this.find(id);
   }
 
-  static async createPlace(placeFields: PlaceFields) {
+  static async add(placeFields: PlaceFields) {
     return await this.create(placeFields)
   }
 
-  static async updatePlace(id: string, fields: PlaceFields): Promise < Model > {
+  static async edit(id: string, fields: PlaceFields): Promise < Model > {
     await this.where('id', id).update({
       ...fields
     });
     return this.find(id);
   }
 
-  static async deletePlace(id: string): Promise < Model | Model[] > {
+  static async remove(id: string): Promise < Model | Model[] > {
     return await Place.deleteById(id)
   }
 
