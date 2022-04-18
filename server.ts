@@ -12,10 +12,6 @@ router
   })
   .get("/places/:id", async (context) => {
     const { id = '' } = context.params;
-    if (!id)  {
-      context.response.status = Status.NotFound;
-      return;
-    }
     const place = await db.findPlaceById(id);
     context.response.body = place;
  
@@ -27,10 +23,6 @@ router
   })
   .put("/places/:id", async (context) => {
     const { id = '' } = context.params;
-    if (!id)  {
-      context.response.status = Status.NotFound;
-      return;
-    }
     const fields: PlaceFields = await context.request.body({ type:'json'  }).value
     const updatedPlace = await db.updatePlace(id, fields);
     context.response.body = updatedPlace;
