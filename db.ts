@@ -22,15 +22,21 @@ async function init () {
 }
 
 async function createPlace (placeFields: PlaceFields){ 
-  return Place.create(placeFields)
+  return await Place.create(placeFields)
 }
 
 async function listPlaces (): Promise<any> { // @TODO: Correct type
-  return Place.all() // @TODO: Return only necessary fields
+  return await Place.all()
+}
+
+
+async function updatePlace (id: string, fields: PlaceFields): Promise<any> { // @TODO: Correct type
+   await Place.where('id', id).update({...fields});
+   return Place.find(id);
 }
 
 async function deletePlace (id:string): Promise<any> { // @TODO: Correct type
-  return Place.deleteById(id) // @TODO: Return only necessary fields
+  return await Place.deleteById(id) 
 }
 
-export default { init, listPlaces, createPlace, deletePlace };
+export default { init, listPlaces, createPlace, deletePlace, updatePlace };

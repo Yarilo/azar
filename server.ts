@@ -15,6 +15,16 @@ router
     const newPlace = await db.createPlace(fields);
     context.response.body = newPlace;
   })
+  .put("/places/:id", async (context) => {
+    const { id = '' } = context.params;
+    if (!id)  {
+      context.response.status = Status.NotFound;
+      return;
+    }
+    const fields: PlaceFields = await context.request.body({ type:'json'  }).value
+    const newPlace = await db.updatePlace(id, fields);
+    context.response.body = newPlace;
+  })
   .delete("/places/:id", async (context) => {
     await db.deletePlace(context.params.id);
     context.response.status = Status.OK
