@@ -10,6 +10,16 @@ router
     const places = await db.listPlaces();
     context.response.body = JSON.stringify(places);
   })
+  .get("/places/:id", async (context) => {
+    const { id = '' } = context.params;
+    if (!id)  {
+      context.response.status = Status.NotFound;
+      return;
+    }
+    const place = await db.findPlaceById(id);
+    context.response.body = place;
+ 
+  })
   .post("/places", async (context) => {
     const fields: PlaceFields = await context.request.body({ type:'json'  }).value
     const newPlace = await db.createPlace(fields);
@@ -22,14 +32,13 @@ router
       return;
     }
     const fields: PlaceFields = await context.request.body({ type:'json'  }).value
-    const newPlace = await db.updatePlace(id, fields);
-    context.response.body = newPlace;
+    const updatedPlace = await db.updatePlace(id, fields);
+    context.response.body = updatedPlace;
   })
   .delete("/places/:id", async (context) => {
     await db.deletePlace(context.params.id);
     context.response.status = Status.OK
   })
-  // @TODO: PUT
   // @TODO: events
 
 

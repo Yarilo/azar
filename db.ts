@@ -30,13 +30,17 @@ async function listPlaces (): Promise<any> { // @TODO: Correct type
 }
 
 
+async function findPlaceById (id: string): Promise<any> { // @TODO: Correct type
+  return await Place.find(id);
+}
+
 async function updatePlace (id: string, fields: PlaceFields): Promise<any> { // @TODO: Correct type
    await Place.where('id', id).update({...fields});
-   return Place.find(id);
+   return findPlaceById(id);
 }
 
 async function deletePlace (id:string): Promise<any> { // @TODO: Correct type
   return await Place.deleteById(id) 
 }
 
-export default { init, listPlaces, createPlace, deletePlace, updatePlace };
+export default { init, listPlaces, createPlace, deletePlace, updatePlace, findPlaceById };
