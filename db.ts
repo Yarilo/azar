@@ -25,8 +25,12 @@ async function createPlace (placeFields: PlaceFields){
   return Place.create(placeFields)
 }
 
-async function list (): Promise<any> { // @TODO: Correct type
+async function listPlaces (): Promise<any> { // @TODO: Correct type
   return Place.all() // @TODO: Return only necessary fields
 }
 
-export default { init, list };
+async function deletePlace (id:string): Promise<any> { // @TODO: Correct type
+  return Place.deleteById(id) // @TODO: Return only necessary fields
+}
+
+export default { init, listPlaces, createPlace, deletePlace };
