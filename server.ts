@@ -3,6 +3,7 @@ import { Application, Router, Status } from "https://deno.land/x/oak/mod.ts";
 import db from './db.ts'
 import { Place, Event } from './models/index.ts'
 import { PlaceFields } from './models/place.ts'
+import { EventFields } from './models/event.ts'
 
 const router = new Router();
 router
@@ -38,8 +39,27 @@ router
     const events = await Event.list();
     context.response.body = JSON.stringify(events);
   })
+  .get("/events/:id", async (context) => {
+    const { id = '' } = context.params;
+    const place = await Event.findById(id);
+    context.response.body = place;
  
-  // @TODO: events
+  })
+  .post("/events", async (context) => {
+    const fields: EventFields = await context.request.body({ type:'json'  }).value
+    const newPlace = await Event.createEvent(fields);
+    context.response.body = newPlace;
+  })
+  .put("/events/:id", async (context) => {
+    const { id = '' } = context.params;
+    const fields: EventFields = await context.request.body({ type:'json'  }).value
+    const updatedPlace = await Event.updateEvent(id, fields);
+    context.response.body = updatedPlace;
+  })
+  .delete("/events/:id", async (context) => {
+    await Event.deleteEvent(context.params.id);
+    context.response.status = Status.OK
+  })
 
 
 
