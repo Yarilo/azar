@@ -2,20 +2,21 @@ import {
   Model,
   DataTypes
 } from 'https://deno.land/x/denodb/mod.ts';
+import Event from './event.ts'
 
 export type PlaceFields = {
-  readonly id ? : any,
-  readonly createdAt ? : string; // Correct type?
-  readonly updatedAt ? : string;
+  readonly id ? : string,
+  readonly createdAt ? : Date;
+  readonly updatedAt ? : Date;
   name: string,
   website: string,
   address: string,
-} // @TODO: Infer it from below or something
+}
 
 class Place extends Model {
   static table = 'places';
   static timestamps = true;
-  static fields: PlaceFields = {
+  static fields = {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -50,9 +51,11 @@ class Place extends Model {
     return await Place.deleteById(id)
   }
 
+  // Relationships
+   static events() {
+    return this.hasMany(Event);
+  }
 }
 
 
-export {
-  Place
-};
+export default Place;
