@@ -25,7 +25,6 @@ class Place extends Model {
     name: DataTypes.STRING,
     website: DataTypes.STRING,
     address: DataTypes.STRING
-    // @TODO: Add fk to events
   }
 
   static async list() {
@@ -51,7 +50,8 @@ class Place extends Model {
     return await Place.deleteById(id)
   }
 
-  // Relationships
+  /* Relationships */
+
    static events() {
     return this.hasMany(Event);
   }

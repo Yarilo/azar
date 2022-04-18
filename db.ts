@@ -23,7 +23,6 @@ async function init () {
   await db.sync({drop:true}); // @TODO: Drop true only useful while testing I guess?
 
  await Place.createPlace({name:'Placetest',website: 'http://test.com', address:'test, 1, 4'})
-
  await Event.createEvent({title:'test-event', description:'woss', date: new Date(), price:50, url: 'http://test.com', placeId:'1'});
 
  console.log('DB started!');

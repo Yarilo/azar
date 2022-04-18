@@ -32,7 +32,6 @@ class Event extends Model {
     price: DataTypes.FLOAT,
     date: DataTypes.DATE,
     // @TODO: Images
-    // @TODO: Add fk to places
   }
 
   static async list() {
@@ -58,8 +57,9 @@ class Event extends Model {
     return await this.deleteById(id)
   }
 
+ 
+  /* Relationships */
 
-  // Relationships
   static place() {
     return this.hasOne(Place);
   }
