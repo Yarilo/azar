@@ -1,2 +1,4 @@
 .next.org
 .todo.org
+.vscode
+node_modules
