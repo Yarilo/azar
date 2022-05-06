@@ -3,3 +3,4 @@
 .vscode
 .azar-code-workspace
 node_modules
+client/public/build/
