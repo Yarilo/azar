@@ -25,6 +25,7 @@
     "@tsconfig/svelte": "2.0.0"
   },
   "dependencies": {
+    "axios": "0.21.1",
     "sirv-cli": "2.0.2"
   }
 }
