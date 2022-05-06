@@ -1,5 +1,6 @@
 
 import { Application, Router, Status } from "https://deno.land/x/oak/mod.ts";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import db from './db.ts'
 import { Place, Event } from './models/index.ts'
 import { PlaceFields } from './models/place.ts'
@@ -65,6 +66,13 @@ router
 
 
 const app = new Application();
+
+app.use(
+  oakCors({
+    origin: "http://localhost:8080"
+  }),
+);
+
 
 // Logger
 app.use(async (ctx, next) => {
