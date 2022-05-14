@@ -38,6 +38,11 @@ class Event extends Model {
     return await this.all()
   }
 
+  static async listTodayEvents() {
+    return await this.where('datepart()',,'1').
+  }
+
+
   static async findById(id: string): Promise < Model > {
     return await this.find(id);
   }

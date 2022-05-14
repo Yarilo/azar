@@ -6,6 +6,12 @@ import { Place, Event } from './models/index.ts'
 import { PlaceFields } from './models/place.ts'
 import { EventFields } from './models/event.ts'
 
+const NUMBER_OF_DAILY_EVENTS = 3; //@TODO: Move to constants;
+
+function getRandom(min: number, max:number) {
+  return Math.random() * (max - min) + min;
+}
+
 const router = new Router();
 router
   .get("/places", async (context) => {
@@ -40,6 +46,20 @@ router
     const events = await Event.list();
     context.response.body = JSON.stringify(events);
   })
+  .get("/events/today", async (context) => {
+    const events = await Event.list(); // @TODO: Filter today events
+
+    //@TODO Save them to DB or do something to have the same 3 events per day
+    
+    const selectedEventsForToday = [];
+    for (let i=0; i< NUMBER_OF_DAILY_EVENTS; i++) {
+      const index = getRandom(0, events.length);
+      const [selectedEvent] = events.splice(index, 1);
+      selectedEventsForToday.push(selectedEvent);
+    }
+    context.response.body = JSON.stringify(selectedEventsForToday);
+    
+  })
   .get("/events/:id", async (context) => {
     const { id = '' } = context.params;
     const place = await Event.findById(id);
@@ -61,7 +81,6 @@ router
     await Event.remove(context.params.id);
     context.response.status = Status.OK
   })
-
 
 
 
