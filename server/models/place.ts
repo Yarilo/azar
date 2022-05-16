@@ -27,12 +27,13 @@ class Place extends Model {
     address: DataTypes.STRING
   }
 
+
   static async list() {
     return await this.all()
   }
 
-  static async findById(id: string): Promise < Model > {
-    return await this.find(id);
+  static async findById(idOrIds: any): Promise < Model > {
+    return await this.find(idOrIds);
   }
 
   static async add(placeFields: PlaceFields) {

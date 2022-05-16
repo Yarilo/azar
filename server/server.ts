@@ -2,7 +2,7 @@
 import { Application, Router, Status } from "https://deno.land/x/oak/mod.ts";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import db from './db.ts'
-import { Place, Event } from './models/index.ts'
+import { Place, Event, ChosenEvent } from './models/index.ts'
 import { PlaceFields } from './models/place.ts'
 import { EventFields } from './models/event.ts'
 
@@ -47,6 +47,13 @@ router
     context.response.body = JSON.stringify(events);
   })
   .get("/events/today", async (context) => {
+    const chosenEvents:any = await ChosenEvent.list(); // @TODO: Filter today events
+
+    if (chosenEvents && chosenEvents.length) {
+      const selectedEventsForToday = await Event.findById(chosenEvents.map((e: any) => e.eventId));
+      context.response.body = JSON.stringify(selectedEventsForToday);
+      return;
+    }
     const events = await Event.list(); // @TODO: Filter today events
 
     //@TODO Save them to DB or do something to have the same 3 events per day
@@ -56,7 +63,9 @@ router
       const index = getRandom(0, events.length);
       const [selectedEvent] = events.splice(index, 1);
       selectedEventsForToday.push(selectedEvent);
+      await ChosenEvent.add({eventId: selectedEvent.id, date: new Date()})
     }
+    
     context.response.body = JSON.stringify(selectedEventsForToday);
     
   })

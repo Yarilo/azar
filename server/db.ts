@@ -1,5 +1,5 @@
 import { Database, PostgresConnector } from 'https://deno.land/x/denodb/mod.ts';
-import { Place, Event } from './models/index.ts'
+import { Place, Event, ChosenEvent } from './models/index.ts'
 import { Relationships } from 'https://deno.land/x/denodb/mod.ts';
 
 
@@ -27,8 +27,8 @@ async function init () {
   const db = new Database(connector);
   
   await Relationships.belongsTo(Event, Place);
-
-  await db.link([Place, Event]);
+  await Relationships.belongsTo(ChosenEvent, Event);
+  await db.link([Place, Event, ChosenEvent]);
   await db.sync({drop:true}); // @TODO: Drop true only useful while testing I guess?
 
  await populateDBWithDummyData();
