@@ -2,6 +2,7 @@ import {
   Model,
   DataTypes
 } from 'https://deno.land/x/denodb/mod.ts';
+import BaseModel from './baseModel.ts';
 import Event from './event.ts'
 
 export type PlaceFields = {
@@ -13,7 +14,7 @@ export type PlaceFields = {
   address: string,
 }
 
-class Place extends Model {
+class Place extends BaseModel {
   static table = 'places';
   static timestamps = true;
   static fields = {
@@ -28,14 +29,6 @@ class Place extends Model {
   }
 
 
-  static async list() {
-    return await this.all()
-  }
-
-  static async findById(idOrIds: any): Promise < Model > {
-    return await this.find(idOrIds);
-  }
-
   static async add(placeFields: PlaceFields) {
     return await this.create(placeFields)
   }
@@ -45,10 +38,6 @@ class Place extends Model {
       ...fields
     });
     return this.find(id);
-  }
-
-  static async remove(id: string): Promise < Model | Model[] > {
-    return await Place.deleteById(id)
   }
 
   /* Relationships */
