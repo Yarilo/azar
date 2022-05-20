@@ -49,6 +49,7 @@ router
   .get("/events/today", async (context) => {
     const chosenEvents:any = await ChosenEvent.list(); // @TODO: Filter today events
 
+    //@TODO Sort events in the same way for both cases
     if (chosenEvents && chosenEvents.length) {
       const selectedEventsForToday = await Event.findById(chosenEvents.map((e: any) => e.eventId));
       context.response.body = JSON.stringify(selectedEventsForToday);

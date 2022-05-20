@@ -10,7 +10,7 @@
         request = axios.create({
 			baseURL: BASE_SERVER_URL,
 		});
-		 const response = await request.get(`/events`);
+		 const response = await request.get(`/events/today`);
 		 currentEvents = response.data;
 		 console.log('CURRENT EVENTS', currentEvents)
        })
