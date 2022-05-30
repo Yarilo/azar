@@ -29,7 +29,7 @@ class Event extends BaseModel {
     },
     url: DataTypes.STRING,
     title: DataTypes.STRING,
-    description: DataTypes.STRING,
+    description: DataTypes.TEXT,
     price: DataTypes.FLOAT,
     date: DataTypes.DATE,
     // @TODO: Images
