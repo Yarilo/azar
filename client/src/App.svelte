@@ -97,6 +97,7 @@
 	 .event-list {
 		display: flex;
 		flex-direction: column;
+		padding-left: 10px;
 	 }
 
 	 .show-events-icon {
