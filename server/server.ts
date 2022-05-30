@@ -8,8 +8,15 @@ import { EventFields } from './models/event.ts'
 
 const NUMBER_OF_DAILY_EVENTS = 3; //@TODO: Move to constants;
 
+type SelectedEvent = Event & {place: {name: string, website:string, address:string } }
+
 function getRandom(min: number, max:number) {
   return Math.random() * (max - min) + min;
+}
+
+// @TODO: Replace any
+async function populatePlace(event: any) {
+  event.place =  await Place.findById(event.placeId);
 }
 
 const router = new Router();
@@ -51,7 +58,11 @@ router
 
     //@TODO Sort events in the same way for both cases
     if (chosenEvents && chosenEvents.length) {
-      const selectedEventsForToday = await Event.findById(chosenEvents.map((e: any) => e.eventId));
+      const selectedEventsForToday = await Event.findById(chosenEvents.map((e: any) => e.eventId)) as any;
+      
+      const populatePlacesTasks = (selectedEventsForToday ||[]).map(populatePlace);
+      await Promise.all(populatePlacesTasks);
+
       context.response.body = JSON.stringify(selectedEventsForToday);
       return;
     }
@@ -62,7 +73,9 @@ router
     const selectedEventsForToday = [];
     for (let i=0; i< NUMBER_OF_DAILY_EVENTS; i++) {
       const index = getRandom(0, events.length);
-      const [selectedEvent] = events.splice(index, 1);
+      const [selectedEvent] = events.splice(index, 1) as SelectedEvent[]
+
+      await populatePlace(selectedEvent);
       selectedEventsForToday.push(selectedEvent);
       await ChosenEvent.add({eventId: selectedEvent.id, date: new Date()})
     }
