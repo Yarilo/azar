@@ -1,6 +1,6 @@
 <script lang="ts">
     import * as axios from 'axios';
-	import { ArrowRightCircleIcon } from 'svelte-feather-icons'
+	import { ArrowRightIcon } from 'svelte-feather-icons'
 	import Event from './Event.svelte';
 	let request;
 	let currentEvents = [];
@@ -50,7 +50,7 @@
 		</ul>
 		{:else}
 		<div class='show-events-icon' on:click={requestEvents}>
-			<ArrowRightCircleIcon  />
+			<ArrowRightIcon />
 		</div>
 		{/if}
 	{/if}
