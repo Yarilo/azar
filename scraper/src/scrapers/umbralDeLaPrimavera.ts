@@ -30,6 +30,8 @@ const MONTH_NAME_TO_NUMBER: any = {
 
 const parseTextField = (text = '') => text.replace(/\n/g, '').replace(/\t/g, '');
 
+const NOW = () => new Date();
+
 export default class umbralDeLaPrimavera {
 
     url = 'http://elumbraldeprimavera.com/evento/';
@@ -38,11 +40,33 @@ export default class umbralDeLaPrimavera {
 
     constructor() { }
 
+
+
     parseDate(dateText: string) {
         const [day, rawMonthName, year, _1, _2, rawHour] = parseTextField(dateText).split(' ');
-        const month = MONTH_NAME_TO_NUMBER[rawMonthName.split(',')[0]] as string;
-        const hour = rawHour.split('Europe')[0];
+        const monthName = rawMonthName.replace(',','');
+        const month = MONTH_NAME_TO_NUMBER[monthName] as string;
+        const hour = rawHour?.split('Europe')[0]; // TODO: Repeated dates have no hour
         const date = new Date(`${month} ${day}, ${year} ${hour}`); //All times GMT, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+        return date;
+    }
+
+
+    async getDate(page:any): Promise<Date> {
+        const dateText = await page.locator(':text("Cuando:") + div').textContent();
+        let date = await this.parseDate(dateText);
+        if (date < NOW()) {
+            // We have to trigger a popup that happens when hovering over a "repeats" button
+            const popupClass ='.ai1ec-in';
+            await page.hover('text=Repeats');
+            const datesText = await page.locator(popupClass).first().textContent(); 
+            const dates = datesText.split(`\n`);
+            dates.forEach((date: string) => { // The spaces here are not...spaces?
+                const l = this.parseDate(date);
+                console.log('L', l);
+            })
+            //Look for repeat ones and take the fist one
+        }
         return date;
     }
 
@@ -50,21 +74,21 @@ export default class umbralDeLaPrimavera {
         return parseTextField(price);
     }
 
-    async isOldEvent(page: any) { // @TODO: We have to also parse the dates under "repeats", because sometimes the cuando is for the first one
-        const dateText = await page.locator(':text("Cuando:") + div').textContent();
-        const date = this.parseDate(dateText);
-        const now = new Date();
-        return date < now;
+    async isOldEvent(page: any) { // @TODO: We have to also parse the dates under "repeats", because sometimes the cuando is for the firss
+        const date = await this.getDate(page);
+        return date < NOW();
     }
-    async processEvent(page: any): Promise<EventFields> {
+
+    async processEvent(page: any): Promise<EventFields> { // @TODO: Process text fields
         const title = await page.locator('.entry-title').first().textContent();
-        const date = await page.locator(':text("Cuando:") + div').textContent();
+        const date = await this.getDate(page);
         const price = await page.locator(':text("Precio:") + div').textContent();
         const url = await page.url();
         const description = await page.locator('p[style*="text-align: justify;"]').first().textContent(); // All justify-content are descriptions,taking the first one for now
+
         return {
             title,
-            date: this.parseDate(date),
+            date,
             price: this.parsePrice(price).split('€')[0],
             url,
             description,
@@ -75,7 +99,7 @@ export default class umbralDeLaPrimavera {
     async fetchEvents() {
         const stats = { eventsProcessed: 0, eventsSaved: 0, eventsExpired: 0, errors: 0 };
 
-        const browser = await firefox.launch({ headless: true })
+        const browser = await firefox.launch({ headless: false })
         const page = await browser.newPage();
         await page.goto(this.url);
         const events = page.locator('.entry-title');
