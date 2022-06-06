@@ -12,7 +12,7 @@ export type EventFields = {
   description: string;
   price: number; // This may be a string because there could be an "early" and "on site" price...either that or add another field
   date: Date;
-  url: string; // @TODO: Make it unique!
+  url: string;
   placeId: string;
   // @TODO: Images
 };

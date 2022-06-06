@@ -50,13 +50,13 @@ export default class umbralDeLaPrimavera {
         return parseTextField(price);
     }
 
-    async isOldEvent(page: any) {
+    async isOldEvent(page: any) { // @TODO: We have to also parse the dates under "repeats", because sometimes the cuando is for the first one
         const dateText = await page.locator(':text("Cuando:") + div').textContent();
         const date = this.parseDate(dateText);
         const now = new Date();
         return date < now;
     }
-    async processEvent(page: any): Promise<EventFields> { // @TODO: Process text fields
+    async processEvent(page: any): Promise<EventFields> {
         const title = await page.locator('.entry-title').first().textContent();
         const date = await page.locator(':text("Cuando:") + div').textContent();
         const price = await page.locator(':text("Precio:") + div').textContent();
