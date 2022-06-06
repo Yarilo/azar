@@ -1,19 +1,19 @@
 <script lang="ts">
- import {parseTitle} from './utils';
+	import { parseTitle } from "./utils";
 
- export let event;
+	export let event;
 </script>
 
 <h1>{parseTitle(event.title)}</h1>
 <p>{event.description}</p>
 
 <div>
-    <p>{event.price} €</p>
-    <a href={event.url}>{event.url}</a>
+	<p>{event.price} €</p>
+	<a href={event.url}>{event.url}</a>
 </div>
+
 <style>
 	a {
- 		color: inherit;
+		color: inherit;
 	}
-	 
 </style>

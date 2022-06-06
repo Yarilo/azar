@@ -1,21 +1,18 @@
-import {
-  Model,
-  DataTypes
-} from 'https://deno.land/x/denodb/mod.ts';
-import BaseModel from './baseModel.ts';
-import Event from './event.ts'
+import { DataTypes, Model } from "https://deno.land/x/denodb/mod.ts";
+import BaseModel from "./baseModel.ts";
+import Event from "./event.ts";
 
 export type PlaceFields = {
-  readonly id ? : string,
-  readonly createdAt ? : Date;
-  readonly updatedAt ? : Date;
-  name: string,
-  website: string,
-  address: string,
-}
+  readonly id?: string;
+  readonly createdAt?: Date;
+  readonly updatedAt?: Date;
+  name: string;
+  website: string;
+  address: string;
+};
 
 class Place extends BaseModel {
-  static table = 'places';
+  static table = "places";
   static timestamps = true;
   static fields = {
     id: {
@@ -25,27 +22,25 @@ class Place extends BaseModel {
     },
     name: DataTypes.STRING,
     website: DataTypes.STRING,
-    address: DataTypes.STRING
-  }
-
+    address: DataTypes.STRING,
+  };
 
   static async add(placeFields: PlaceFields) {
-    return await this.create(placeFields)
+    return await this.create(placeFields);
   }
 
-  static async edit(id: string, fields: PlaceFields): Promise < Model > {
-    await this.where('id', id).update({
-      ...fields
+  static async edit(id: string, fields: PlaceFields): Promise<Model> {
+    await this.where("id", id).update({
+      ...fields,
     });
     return this.find(id);
   }
 
   /* Relationships */
 
-   static events() {
+  static events() {
     return this.hasMany(Event);
   }
 }
-
 
 export default Place;
