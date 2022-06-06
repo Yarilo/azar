@@ -5,7 +5,7 @@ import { default as axios } from 'axios';
 type EventFields = {
     title: string,
     description: string,
-    price: string, //@TODO Enforce a number here, one of the events fail because it says  "desde.."
+    price: number,
     date: Date,
     url: string,
     placeId: string;
@@ -75,8 +75,10 @@ export default class umbralDeLaPrimavera {
         return date;
     }
 
-    parsePrice(price: string) {
-        return parseTextField(price);
+    async getPrice(page: any): Promise<number> {
+        const priceString = await page.locator(':text("Precio:") + div').textContent();
+        const numbersOnlyPrice = priceString.replace(/[^0-9.€]/g, '');
+        return Number(numbersOnlyPrice.split('€')[0]);
     }
 
     async isOldEvent(page: any) { // @TODO: We have to also parse the dates under "repeats", because sometimes the cuando is for the firss
@@ -87,14 +89,14 @@ export default class umbralDeLaPrimavera {
     async processEvent(page: any): Promise<EventFields> { // @TODO: Process text fields
         const title = await page.locator('.entry-title').first().textContent();
         const date = await this.getDate(page);
-        const price = await page.locator(':text("Precio:") + div').textContent();
+        const price = await this.getPrice(page);
         const url = await page.url();
         const description = await page.locator('p[style*="text-align: justify;"]').first().textContent(); // All justify-content are descriptions,taking the first one for now
 
         return {
             title,
             date,
-            price: this.parsePrice(price).split('€')[0],
+            price,
             url,
             description,
             placeId: this.placeId,
@@ -124,7 +126,6 @@ export default class umbralDeLaPrimavera {
 
             const processedEvent = await this.processEvent(page);
             stats.eventsProcessed += 1;
-
             try {
                 await this.saveEvent(processedEvent);
                 console.log(`Event ${i}/${count} saved`);
