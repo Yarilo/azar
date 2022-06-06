@@ -1,0 +1,1 @@
+export {default as getEventUrl} from './getEventUrl.ts';

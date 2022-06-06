@@ -3,3 +3,4 @@ todo.org
 .vscode
 node_modules
 client/public/build/
+dist

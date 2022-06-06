@@ -1,7 +1,9 @@
 <script lang="ts">
     import * as axios from 'axios';
 	import { ArrowRightIcon } from 'svelte-feather-icons'
+	import { getEventUrl } from "./utils/";
 	import Event from './Event.svelte';
+	import EventList from './EventList.svelte';
 	let request;
 	let currentEvents = [];
 
@@ -11,7 +13,6 @@
 
 	let selectedEvent = null;
 
-	const getEventUrl = (event) => `#${event.title.replace(new RegExp(' ', 'g'),'')}`
 	const requestEvents = async () => {
 		request = axios.create({baseURL: BASE_SERVER_URL});
 		const response = await request.get(`/events/today`);
@@ -21,7 +22,6 @@
 	const onClickEvent = (event) => {
 		selectedEvent = event;
 		location = getEventUrl(event)
-		console.log('location', location)
 	}
 
 	const onClickTitle = () => {
@@ -41,13 +41,7 @@
 		</div>
 	{:else}
 		{#if currentEvents.length > 0}
-			<ul class='event-list'>
-				{#each currentEvents as event}
-				<li on:click={() => onClickEvent(event)}>
-					<h2><a href={getEventUrl(event)}>{event.title}</a></h2>
-				</li>
-			{/each}
-		</ul>
+			<EventList {onClickEvent} events={currentEvents} />
 		{:else}
 		<div class='show-events-icon' on:click={requestEvents}>
 			<ArrowRightIcon />
