@@ -43,29 +43,34 @@ export default class umbralDeLaPrimavera {
 
 
     parseDate(dateText: string) {
-        const [day, rawMonthName, year, _1, _2, rawHour] = parseTextField(dateText).split(' ');
-        const monthName = rawMonthName.replace(',','');
+        const [day, rawMonthName, year, _1, _2, rawHour] = parseTextField(dateText).replace(/\s+/g, ' ').split(' ');
+        const monthName = rawMonthName.replace(',', '');
         const month = MONTH_NAME_TO_NUMBER[monthName] as string;
-        const hour = rawHour?.split('Europe')[0]; // TODO: Repeated dates have no hour
+        const hour = rawHour?.split('Europe')[0] || ''; // "Repeated" dates have no explicit hour
         const date = new Date(`${month} ${day}, ${year} ${hour}`); //All times GMT, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
         return date;
     }
 
+    async getAllSessionsDate(page: any): Promise<string[]> {
+        // The event may have more sessions so we have to trigger a popup that happens when hovering over a "repeats" button
+        const popupClass = '.ai1ec-in';
+        await page.hover('text=Repeats');
+        const datesText = await page.locator(popupClass).first().textContent();
+        return datesText.split('\n')
+    }
 
-    async getDate(page:any): Promise<Date> {
+    async getDate(page: any): Promise<Date> {
         const dateText = await page.locator(':text("Cuando:") + div').textContent();
         let date = await this.parseDate(dateText);
-        if (date < NOW()) {
-            // We have to trigger a popup that happens when hovering over a "repeats" button
-            const popupClass ='.ai1ec-in';
-            await page.hover('text=Repeats');
-            const datesText = await page.locator(popupClass).first().textContent(); 
-            const dates = datesText.split(`\n`);
-            dates.forEach((date: string) => { // The spaces here are not...spaces?
-                const l = this.parseDate(date);
-                console.log('L', l);
+
+        const oldDate = date < NOW();
+        const hasOtherSessions = await page.$("text=Repeats");
+        if (oldDate && hasOtherSessions) {
+            const sessionsDates = await this.getAllSessionsDate(page);
+            sessionsDates.forEach((dateText: string) => {
+                const parsedDate = this.parseDate(dateText);
+                if (parsedDate > NOW()) date = parsedDate;
             })
-            //Look for repeat ones and take the fist one
         }
         return date;
     }
@@ -98,8 +103,7 @@ export default class umbralDeLaPrimavera {
 
     async fetchEvents() {
         const stats = { eventsProcessed: 0, eventsSaved: 0, eventsExpired: 0, errors: 0 };
-
-        const browser = await firefox.launch({ headless: false })
+        const browser = await firefox.launch({ headless: true })
         const page = await browser.newPage();
         await page.goto(this.url);
         const events = page.locator('.entry-title');
