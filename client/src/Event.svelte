@@ -9,7 +9,7 @@
 
 <div>
 	<p>{event.price} €</p>
-	<a href={event.url}>{event.url}</a>
+	<a href={event.url} target="_blank">{event.url}</a>
 </div>
 
 <style>
