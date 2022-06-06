@@ -91,6 +91,7 @@ router
   })
   .post("/events", async (context) => {
     const fields: EventFields = await context.request.body({ type:'json'  }).value
+    // Check if the event is already there by title?
     const newPlace = await Event.add(fields);
     context.response.body = newPlace;
   })

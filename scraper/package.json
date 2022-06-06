@@ -1,0 +1,21 @@
+{
+  "name": "scraper",
+  "version": "0.0.1",
+  "description": "Web scraper to fetch experiences for Azar",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsc && node dist/index"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.22.2",
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "axios": "0.21.1",
+    "playwright": "^1.22.2"
+  },
+  "type": "module"
+}

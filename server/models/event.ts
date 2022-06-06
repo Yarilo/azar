@@ -5,15 +5,17 @@ import {
 import Place from './place.ts'
 import BaseModel from './baseModel.ts';
 
+// @TODO: To common type
+// @TODO: To keep it simple, events only have the address of the place, but they could have different address (e.g. a place or a promoter creating events in different sites) 
 export type EventFields = {
   readonly id ? : string,
   readonly createdAt ? : Date;
   readonly updatedAt ? : Date;
   title: string,
   description: string,
-  price: number,
+  price: number, // This may be a string because there could be an "early" and "on site" price...either that or add another field
   date: Date,
-  url: string,
+  url: string, // @TODO: Make it unique!
   placeId: string,
   // @TODO: Images
 }
@@ -27,7 +29,10 @@ class Event extends BaseModel {
       primaryKey: true,
       autoIncrement: true,
     },
-    url: DataTypes.STRING,
+    url: {
+      type: DataTypes.STRING, 
+      unique: true
+    },
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
     price: DataTypes.FLOAT,
