@@ -59,6 +59,11 @@ export default class umbralDeLaPrimavera {
         return datesText.split('\n')
     }
 
+    async getTitle(page: any) {
+        const title = await page.locator('.entry-title').first().textContent();
+        return title;
+    }
+
     async getDate(page: any): Promise<Date> {
         const dateText = await page.locator(':text("Cuando:") + div').textContent();
         let date = await this.parseDate(dateText);
@@ -81,24 +86,28 @@ export default class umbralDeLaPrimavera {
         return Number(numbersOnlyPrice.split('€')[0]);
     }
 
-    async isOldEvent(page: any) { // @TODO: We have to also parse the dates under "repeats", because sometimes the cuando is for the firss
+    getUrl(page: any) {
+        return page.url();
+    }
+
+    async getDescription(page: any) {
+        const description = await page.locator('p[style*="text-align: justify;"]').first().textContent(); // All justify-content are descriptions,taking the first one for now
+        return description;
+    }
+
+
+    async isOldEvent(page: any) {
         const date = await this.getDate(page);
         return date < NOW();
     }
 
-    async processEvent(page: any): Promise<EventFields> { // @TODO: Process text fields
-        const title = await page.locator('.entry-title').first().textContent();
-        const date = await this.getDate(page);
-        const price = await this.getPrice(page);
-        const url = await page.url();
-        const description = await page.locator('p[style*="text-align: justify;"]').first().textContent(); // All justify-content are descriptions,taking the first one for now
-
+    async processEvent(page: any): Promise<EventFields> {
         return {
-            title,
-            date,
-            price,
-            url,
-            description,
+            title: await this.getTitle(page),
+            date: await this.getDate(page),
+            price: await this.getPrice(page),
+            url: this.getUrl(page),
+            description: await this.getDescription(page),
             placeId: this.placeId,
         }
     }
