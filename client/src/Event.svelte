@@ -1,8 +1,10 @@
 <script lang="ts">
+ import {parseTitle} from './utils';
+
  export let event;
 </script>
 
-<h1>{event.title}</h1>
+<h1>{parseTitle(event.title)}</h1>
 <p>{event.description}</p>
 
 <div>
