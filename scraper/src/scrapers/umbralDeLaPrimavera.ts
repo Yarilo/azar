@@ -1,17 +1,8 @@
 
 import { firefox } from 'playwright';
 import { default as axios } from 'axios';
-
-type EventFields = {
-    title: string,
-    description: string,
-    price: number,
-    date: Date,
-    url: string,
-    placeId: string;
-    // @TODO: Images
-}
-
+import { EventFields } from '../types/index.js';
+import Scraper from './Scraper.js';
 
 const MONTH_NAME_TO_NUMBER: any = {
     'enero': 'january',
@@ -32,15 +23,15 @@ const parseTextField = (text = '') => text.replace(/\n/g, '').replace(/\t/g, '')
 
 const NOW = () => new Date();
 
-export default class umbralDeLaPrimavera {
+export default class umbralDeLaPrimavera extends Scraper { // Add a type/interface here with all methods to easily replicate this class in other datasources (as if we were using an "abstract" class and all datasources extend from it)
 
     url = 'http://elumbraldeprimavera.com/evento/';
     name = 'El Umbral de La Primavera'
     placeId = '1'; // @TODO: Adjust
 
-    constructor() { }
-
-
+    constructor() {
+        super();
+     }
 
     parseDate(dateText: string) {
         const [day, rawMonthName, year, _1, _2, rawHour] = parseTextField(dateText).replace(/\s+/g, ' ').split(' ');
