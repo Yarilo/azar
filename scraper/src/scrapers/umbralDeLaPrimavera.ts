@@ -23,7 +23,7 @@ const parseTextField = (text = '') => text.replace(/\n/g, '').replace(/\t/g, '')
 
 const NOW = () => new Date();
 
-export default class umbralDeLaPrimavera extends Scraper { // Add a type/interface here with all methods to easily replicate this class in other datasources (as if we were using an "abstract" class and all datasources extend from it)
+export default class UmbralDeLaPrimavera extends Scraper {
 
     url = 'http://elumbraldeprimavera.com/evento/';
     name = 'El Umbral de La Primavera'
