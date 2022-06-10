@@ -1,20 +1,25 @@
 import { EventFields } from '../types/index.js';
+import { default as axios } from 'axios';
 
 abstract class Scraper {
+
 
     abstract getDate(page: any): Promise<Date>;
 
     abstract getPrice(page: any): Promise<number>;
 
-    abstract getUrl(page: any): string;
-
     abstract getDescription(page: any): Promise<string>
-
-    abstract isOldEvent(page: any): Promise<boolean>;
 
     abstract processEvent(page: any): Promise<EventFields>;
 
-    abstract saveEvent(event: EventFields): Promise<void>;
+
+    getUrl(page: any): string {
+        return page.url();
+    }
+    async saveEvent(event: EventFields): Promise<void> {
+        const request = axios.create({ baseURL: 'http://localhost:4242' });
+        await request.post(`/events`, event);
+    }
 
     abstract fetchEvents(): Promise<void>;
 }

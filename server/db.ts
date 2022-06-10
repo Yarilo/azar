@@ -13,6 +13,11 @@ const populateDBWithDummyData = async () => {
     website: "http://test.com",
     address: "test, 1, 4",
   });
+  await Place.add({
+    name: "Placetest2",
+    website: "http://test.com",
+    address: "test, 1, 4",
+  });
   for (let i = 0; i < TEST_EVENTS; i++) {
     await Event.add({
       title: `test-event-${i}`,

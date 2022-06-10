@@ -4,7 +4,7 @@ import { default as axios } from 'axios';
 import { EventFields } from '../types/index.js';
 import Scraper from './Scraper.js';
 
-const MONTH_NAME_TO_NUMBER: any = {
+const PLACE_MONTH_TO_DATE_MONTH: any = {
     'enero': 'january',
     'febrero': 'february',
     'marzo': 'march',
@@ -31,12 +31,12 @@ export default class UmbralDeLaPrimavera extends Scraper {
 
     constructor() {
         super();
-     }
+    }
 
     parseDate(dateText: string) {
         const [day, rawMonthName, year, _1, _2, rawHour] = parseTextField(dateText).replace(/\s+/g, ' ').split(' ');
         const monthName = rawMonthName.replace(',', '');
-        const month = MONTH_NAME_TO_NUMBER[monthName] as string;
+        const month = PLACE_MONTH_TO_DATE_MONTH[monthName] as string;
         const hour = rawHour?.split('Europe')[0] || ''; // "Repeated" dates have no explicit hour
         const date = new Date(`${month} ${day}, ${year} ${hour}`); //All times GMT, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
         return date;
@@ -104,6 +104,8 @@ export default class UmbralDeLaPrimavera extends Scraper {
     }
 
     async fetchEvents() {
+        console.log(`Processing events for ${this.name}: ${this.url}`)
+
         const stats = { eventsProcessed: 0, eventsSaved: 0, eventsExpired: 0, errors: 0 };
         const browser = await firefox.launch({ headless: true })
         const page = await browser.newPage();
@@ -137,7 +139,8 @@ export default class UmbralDeLaPrimavera extends Scraper {
 
             await page.goBack();
         }
-        console.log(`Finish processing events for ${this.name}:${this.url}`)
+
+        console.log(`Finish processing events for ${this.name}: ${this.url}`)
         console.log(`Stats: ${JSON.stringify(stats)}`);
     }
 

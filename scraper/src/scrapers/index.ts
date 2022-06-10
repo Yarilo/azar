@@ -1,4 +1,5 @@
-import umbralDeLaPrimavera from './umbralDeLaPrimavera.js'
+import UmbralDeLaPrimavera from './UmbralDeLaPrimavera.js'
+import LaEscaleraDeJacob from './LaEscaleraDeJacob.js'
 
 
-export default [ umbralDeLaPrimavera ]
+export default [ UmbralDeLaPrimavera, LaEscaleraDeJacob ]
