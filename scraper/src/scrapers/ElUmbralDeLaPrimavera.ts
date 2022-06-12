@@ -3,6 +3,7 @@ import { firefox } from 'playwright';
 import { default as axios } from 'axios';
 import { EventFields } from '../types/index.js';
 import Scraper from './Scraper.js';
+import { getDateFromStrings, now } from './utils/index.js';
 
 const PLACE_MONTH_TO_DATE_MONTH: any = {
     'enero': 'january',
@@ -21,9 +22,7 @@ const PLACE_MONTH_TO_DATE_MONTH: any = {
 
 const parseTextField = (text = '') => text.replace(/\n/g, '').replace(/\t/g, '');
 
-const NOW = () => new Date();
-
-export default class UmbralDeLaPrimavera extends Scraper {
+export default class ElUmbralDeLaPrimavera extends Scraper {
 
     url = 'http://elumbraldeprimavera.com/evento/';
     name = 'El Umbral de La Primavera'
@@ -38,7 +37,7 @@ export default class UmbralDeLaPrimavera extends Scraper {
         const monthName = rawMonthName.replace(',', '');
         const month = PLACE_MONTH_TO_DATE_MONTH[monthName] as string;
         const hour = rawHour?.split('Europe')[0] || ''; // "Repeated" dates have no explicit hour
-        const date = new Date(`${month} ${day}, ${year} ${hour}`); //All times GMT, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+        const date = getDateFromStrings({ month, year, hour, day });
         return date;
     }
 
@@ -59,13 +58,13 @@ export default class UmbralDeLaPrimavera extends Scraper {
         const dateText = await page.locator(':text("Cuando:") + div').textContent();
         let date = await this.parseDate(dateText);
 
-        const oldDate = date < NOW();
+        const oldDate = date < now();
         const hasOtherSessions = await page.$("text=Repeats");
         if (oldDate && hasOtherSessions) {
             const sessionsDates = await this.getAllSessionsDate(page);
             sessionsDates.forEach((dateText: string) => {
                 const parsedDate = this.parseDate(dateText);
-                if (parsedDate > NOW()) date = parsedDate;
+                if (parsedDate > now()) date = parsedDate;
             })
         }
         return date;
@@ -89,7 +88,7 @@ export default class UmbralDeLaPrimavera extends Scraper {
 
     async isOldEvent(page: any) {
         const date = await this.getDate(page);
-        return date < NOW();
+        return date < now();
     }
 
     async processEvent(page: any): Promise<EventFields> {

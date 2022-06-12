@@ -1,6 +1,7 @@
 
 import { firefox } from 'playwright';
 import Scraper from './Scraper.js';
+import { getDateFromStrings, now } from './utils/index.js';
 
 // We are asuming three letters per month...currently only `jun` is shown.
 const PLACE_MONTH_TO_DATE_MONTH: any = {
@@ -18,8 +19,6 @@ const PLACE_MONTH_TO_DATE_MONTH: any = {
     'dic': 'december'
 }
 
-
-const NOW = () => new Date();
 
 export default class LaEscaleraDeJacob extends Scraper {
 
@@ -44,11 +43,11 @@ export default class LaEscaleraDeJacob extends Scraper {
         const day = await iframe.locator('.num_dia').first().textContent();
         const rawMonth = await iframe.locator('.mes').first().textContent();
         const month = PLACE_MONTH_TO_DATE_MONTH[rawMonth.toLowerCase()];
-        const year = new Date().getFullYear(); // Assuming always current year...this will break in NYE! :D 
+        const year = String(new Date().getFullYear()); // Assuming always current year...this will break in NYE! :D 
         const rawHour = await iframe.locator('.time-session').first().textContent();
         const hour = rawHour.replace(/\s+/g, '').replace('h', '');
 
-        const date = new Date(`${month} ${day}, ${year} ${hour}`); //All times GMT, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+        const date = new Date(`${month} ${day}, ${year} ${hour}`); 
         return date;
     }
 
@@ -89,13 +88,14 @@ export default class LaEscaleraDeJacob extends Scraper {
     }
 
     async isOldEvent(page: any) {
+        // We take the date from the "Hasta cuando" text instead of the iframe, which sometimes it does not show
         const rawDate = await page.locator('p.f-f-tahoma', { hasText: /[0-9][0-9]\// }).textContent();
         const [day, rawMonth] = rawDate.split(':')[1].split('/')
         const parsedMonthName = rawMonth.toLowerCase().replace(/[^a-zA-Z]+/g, '');
         const month = PLACE_MONTH_TO_DATE_MONTH[parsedMonthName];
-        const year = new Date().getFullYear();
-        const date = new Date(`${month} ${day}, ${year}`);
-        return date < NOW();
+        const year = String(new Date().getFullYear());
+        const date = getDateFromStrings({ month, year, day });
+        return date < now();
     }
 
     async fetchEvents() {

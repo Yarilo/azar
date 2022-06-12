@@ -3,6 +3,7 @@ import { default as axios } from 'axios';
 
 abstract class Scraper {
 
+    abstract getTitle(page: any): Promise<string>;
 
     abstract getDate(page: any): Promise<Date>;
 
