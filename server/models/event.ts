@@ -48,6 +48,12 @@ class Event extends BaseModel {
     return this.find(id);
   }
 
+  static async listToday(): Promise<Model[]> {
+    const today = new Date().toISOString().split("T")[0];
+    const todayEvents = await this.where("date", "=", today).get() as Model[];
+    return todayEvents;
+  }
+
   /* Relationships */
 
   static place() {

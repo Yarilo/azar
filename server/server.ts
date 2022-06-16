@@ -56,7 +56,7 @@ router
     context.response.body = JSON.stringify(events);
   })
   .get("/events/today", async (context) => {
-    const chosenEvents: any = await ChosenEvent.list(); // @TODO: Filter today events
+    const chosenEvents: any = await ChosenEvent.listToday();
 
     //@TODO Sort events in the same way for both cases
     if (chosenEvents && chosenEvents.length) {
@@ -72,18 +72,18 @@ router
       context.response.body = JSON.stringify(selectedEventsForToday);
       return;
     }
-    const events = await Event.list(); // @TODO: Filter today events
 
-    //@TODO Save them to DB or do something to have the same 3 events per day
-
+    const events = await Event.listToday();
     const selectedEventsForToday = [];
     for (let i = 0; i < NUMBER_OF_DAILY_EVENTS; i++) {
       const index = getRandom(0, events.length);
       const [selectedEvent] = events.splice(index, 1) as SelectedEvent[];
-
+      if (!selectedEvent) {
+        break; // This means less than 3 events have been found
+      }
       await populatePlace(selectedEvent);
       selectedEventsForToday.push(selectedEvent);
-      await ChosenEvent.add({ eventId: selectedEvent.id, date: new Date() });
+      await ChosenEvent.add({ eventId: selectedEvent.id });
     }
 
     context.response.body = JSON.stringify(selectedEventsForToday);

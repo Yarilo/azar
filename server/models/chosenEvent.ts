@@ -7,7 +7,6 @@ export type ChosenEventFields = {
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
   eventId: any;
-  date: Date;
 };
 
 class ChosenEvent extends BaseModel {
@@ -24,6 +23,13 @@ class ChosenEvent extends BaseModel {
 
   static async add(chosenEventFields: ChosenEventFields) {
     return await this.create(chosenEventFields);
+  }
+
+  static async listToday(): Promise<Model[]> {
+    const today = new Date().toISOString().split("T")[0];
+    const todayEvents = await this.where("createdAt", "=", today)
+      .get() as Model[];
+    return todayEvents;
   }
 
   /* Relationships */
