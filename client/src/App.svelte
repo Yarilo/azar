@@ -25,7 +25,9 @@
 	};
 
 	const onClickTitle = () => {
+		// On click without selected event, go to home
 		if (selectedEvent) selectedEvent = null;
+		currentEvents = []; //@TOODO: Use location/reset location
 	};
 </script>
 
@@ -60,6 +62,9 @@
 	}
 	.layout h1 {
 		font-size: 128px;
+	}
+	.title {
+		cursor: pointer;
 	}
 
 	.title-event h1 {
