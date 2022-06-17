@@ -18,7 +18,7 @@ class ChosenEvent extends BaseModel {
       primaryKey: true,
       autoIncrement: true,
     },
-    date: DataTypes.DATE,
+    date: DataTypes.DATETIME,
   };
 
   static async add(chosenEventFields: ChosenEventFields) {
@@ -27,10 +27,19 @@ class ChosenEvent extends BaseModel {
 
   static async listToday(): Promise<Model[]> {
     const today = new Date().toISOString().split("T")[0];
-    const todayEvents = await this.where("createdAt", "=", today)
-      .get() as Model[];
+    const todayAtMidnight = `${today}:T00:00:00.000Z`;
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const eventsFromTodayAndAfter = await this.where("createdAt", ">", todayAtMidnight,
+    ).get() as Model[];
+
+    // Cannot do multiple where clauses so we filter manually https://github.com/eveningkid/denodb/issues/197
+    const todayEvents = eventsFromTodayAndAfter.filter((event: any) => (event.date < tomorrow));
     return todayEvents;
   }
+
 
   /* Relationships */
 

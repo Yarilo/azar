@@ -112,6 +112,7 @@ export default class LaEscaleraDeJacob extends Scraper {
         for (let i = 0; i < count; i++) {
             console.log(`Processing event ${i}/${count}...`);
 
+            // Try catch here and/ or increase timeout or add retries
             const text = await events.nth(i).textContent();
             await page.click(`text=${text}`);
 

@@ -9,21 +9,22 @@ const populateDBWithDummyData = async () => {
   const TODAY_TEST_EVENTS = 0;
   const OTHER_DAYS_TEST_EVENTS = 0;
 
+  // @TODO: Put this info in the scrapers and save it from there
   await Place.add({
-    name: "Placetest",
+    name: "El Umbral de La Primavera",
     website: "http://test.com",
-    address: "test, 1, 4",
+    address: "Calle de La Primavera, 11",
   });
   await Place.add({
-    name: "Placetest2",
+    name: "La Escalera de Jacob",
     website: "http://test.com",
-    address: "test, 1, 4",
+    address: "Calle de Lavapiés, 9",
   });
 
   await Place.add({
-    name: "Placetest3",
+    name: "Cafe El Despertar",
     website: "http://test.com",
-    address: "test, 1, 4",
+    address: "Calle de la Torrecilla del Leal, 18",
   });
   for (let i = 0; i < TODAY_TEST_EVENTS; i++) {
     await Event.add({
@@ -40,7 +41,7 @@ const populateDBWithDummyData = async () => {
     await Event.add({
       title: `test-other-day-event-${i}`,
       description: MOCK_DESCRIPTION,
-      date: new Date("2019-01-01"),
+      date: new Date("2022-06-18"),
       price: 50,
       url: `http://test-other-day${i}.com`,
       placeId: "1",
@@ -62,7 +63,7 @@ async function init() {
   await Relationships.belongsTo(Event, Place);
   await Relationships.belongsTo(ChosenEvent, Event);
   await db.link([Place, Event, ChosenEvent]);
-  await db.sync({ drop: true }); // @TODO: Drop true only useful while testing I guess?
+  await db.sync({ drop:true}); // @TODO: Drop true only useful while testing I guess?
 
   await populateDBWithDummyData();
 

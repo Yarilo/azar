@@ -33,7 +33,7 @@ class Event extends BaseModel {
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
     price: DataTypes.FLOAT,
-    date: DataTypes.DATE,
+    date: DataTypes.DATETIME,
     // @TODO: Images
   };
 
@@ -50,7 +50,16 @@ class Event extends BaseModel {
 
   static async listToday(): Promise<Model[]> {
     const today = new Date().toISOString().split("T")[0];
-    const todayEvents = await this.where("date", "=", today).get() as Model[];
+    const todayAtMidnight = `${today}:T00:00:00.000Z`;
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const eventsFromTodayAndAfter = await this.where("date", ">",todayAtMidnight,
+    ).get() as Model[];
+
+    // Cannot do multiple where clauses so we filter manually https://github.com/eveningkid/denodb/issues/197
+    const todayEvents = eventsFromTodayAndAfter.filter((event: any) => (event.date < tomorrow));
     return todayEvents;
   }
 
