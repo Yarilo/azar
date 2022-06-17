@@ -82,7 +82,6 @@ export default class CafeElDespertar extends Scraper {
         const events = page.locator('text=Info y reservas');
         const count = await events.count();
 
-        console.log('count', count);
         for (let i = 0; i < count; i++) {
             console.log(`Processing event ${i}/${count}...`);
 
