@@ -49,7 +49,7 @@ export default class CafeElDespertar extends Scraper {
     async getPrice(page: any): Promise<number> {
         const priceString = await page.locator('.mec-events-event-cost').textContent();
         const numbersOnlyPrice = priceString.replace(/[^0-9,€]/g, '').replace(',', '.');
-        return Number(numbersOnlyPrice.replace('€')[0]);
+        return Number(numbersOnlyPrice.split('€')[0]);
     }
 
     async getDescription(page: any): Promise<string> {
