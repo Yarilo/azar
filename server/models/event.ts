@@ -17,6 +17,14 @@ export type EventFields = {
   // @TODO: Images
 };
 
+
+const isToday = (date: Date) => {
+  const today = new Date();
+  return date.getDate() == today.getDate() &&
+    date.getMonth() == today.getMonth() &&
+    date.getFullYear() == today.getFullYear()
+}
+
 class Event extends BaseModel {
   static table = "events";
   static timestamps = true;
@@ -59,7 +67,7 @@ class Event extends BaseModel {
     ).get() as Model[];
 
     // Cannot do multiple where clauses so we filter manually https://github.com/eveningkid/denodb/issues/197
-    const todayEvents = eventsFromTodayAndAfter.filter((event: any) => (event.date < tomorrow));
+    const todayEvents = eventsFromTodayAndAfter.filter((event: any) => isToday(event.date));
     return todayEvents;
   }
 
