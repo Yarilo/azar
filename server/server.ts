@@ -15,6 +15,10 @@ function getRandom(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
 
+function sortEvents(events: SelectedEvent[]): SelectedEvent[] {
+  return events.slice().sort((a: any, b: any) => (a.date.getTime() - b.date.getTime()));
+}
+
 // @TODO: Replace any
 async function populatePlace(event: any) {
   event.place = await Place.findById(event.placeId);
@@ -69,7 +73,9 @@ router
       );
       await Promise.all(populatePlacesTasks);
 
-      context.response.body = JSON.stringify(selectedEventsForToday);
+      context.response.body = JSON.stringify(
+        sortEvents(selectedEventsForToday),
+      );
       return;
     }
 
@@ -86,7 +92,7 @@ router
       await ChosenEvent.add({ eventId: selectedEvent.id }); // We would need to add date in the future if we deal with weekends
     }
 
-    context.response.body = JSON.stringify(selectedEventsForToday);
+    context.response.body = JSON.stringify(sortEvents(selectedEventsForToday));
   })
   .get("/events/:id", async (context) => {
     const { id = "" } = context.params;
