@@ -5,7 +5,7 @@
 </script>
 
 <h1>{parseTitle(event.title)}</h1>
-<p>{event.description}</p>
+<p class="event-description">{event.description}</p>
 
 <div>
 	<p>{event.price} €</p>
@@ -15,5 +15,8 @@
 <style>
 	a {
 		color: inherit;
+	}
+	.event-description {
+		white-space: pre-line;
 	}
 </style>

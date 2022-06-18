@@ -58,7 +58,7 @@ router
   .get("/events/today", async (context) => {
     const chosenEvents: any = await ChosenEvent.listToday();
 
-    //@TODO Sort events in the same way for both cases
+    //@TODO Sort events in the same way for both cases: Sort it by hour
     if (chosenEvents && chosenEvents.length) {
       const selectedEventsForToday = await Event.findById(
         chosenEvents.map((e: any) => e.eventId),
