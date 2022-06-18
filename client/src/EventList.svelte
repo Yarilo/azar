@@ -1,15 +1,8 @@
 <script lang="ts">
-    import { getEventUrl, parseTitle } from "./utils/";
+    import { getEventUrl, parseTitle, parseDate } from "./utils/";
 
     export let events = [];
     export let onClickEvent;
-
-    const parseDate = (dateString) => {
-        const date = new Date(dateString);
-        const hours = date.getHours();
-        const minutes = date.getMinutes() === 0 ? "00" : date.getMinutes();
-        return `${hours}:${minutes}h`;
-    };
 </script>
 
 <ul class="event-list">

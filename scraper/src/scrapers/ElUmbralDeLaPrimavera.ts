@@ -64,7 +64,7 @@ export default class ElUmbralDeLaPrimavera extends Scraper {
             const sessionsDates = await this.getAllSessionsDate(page);
             sessionsDates.forEach((dateText: string) => {
                 const parsedDate = this.parseDate(dateText);
-                if (parsedDate > now()) date = parsedDate;
+                if (parsedDate > now()) date = parsedDate; // @TODO: Take here same hour as above
             })
         }
         return date;
@@ -102,6 +102,8 @@ export default class ElUmbralDeLaPrimavera extends Scraper {
         }
     }
 
+    // @TODO: To base class and then we just pass and argument such as "locator" or something like that..
+    // as this is almost the same for every scraper?
     async fetchEvents() {
         console.log(`Processing events for ${this.name}: ${this.url}`)
 

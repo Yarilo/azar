@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { parseTitle } from "./utils";
+	import { parseTitle, parseDate } from "./utils";
 
 	export let event;
 </script>
@@ -7,9 +7,13 @@
 <h1>{parseTitle(event.title)}</h1>
 <p class="event-description">{event.description}</p>
 
+<br />
+<p />
+
 <div>
+	<a href={event.url} target="_blank">{event.place.name}</a>
+	<p>{parseDate(event.date)}</p>
 	<p>{event.price} €</p>
-	<a href={event.url} target="_blank">{event.url}</a>
 </div>
 
 <style>
