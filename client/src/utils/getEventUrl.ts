@@ -1,1 +1,1 @@
-export default (event:any) => `#${event.title.replace(new RegExp(' ', 'g'),'')}`
+export default (event:any) => `#${encodeURI(event.title.replace(new RegExp(' ', 'g'),''))}`

@@ -1,22 +1,29 @@
 <script lang="ts">
+	import { onMount } from "svelte";
 	import * as axios from "axios";
 	import { ArrowRightIcon } from "svelte-feather-icons";
 	import { getEventUrl } from "./utils/";
 	import Event from "./Event.svelte";
 	import EventList from "./EventList.svelte";
-	let request;
 	let currentEvents = [];
-
-	let BASE_SERVER_URL = "http://localhost:4242";
-
-	let location = window.location.href.split("#")[1];
-
+	let location = `#${window.location.href.split("#")[1]}`;
 	let selectedEvent = null;
+	let fetchingEvents = false;
+
+	const TODAY = "#today";
+	const BASE_SERVER_URL = "http://localhost:4242";
 
 	const requestEvents = async () => {
-		request = axios.create({ baseURL: BASE_SERVER_URL });
+		fetchingEvents = true;
+		const request = axios.create({ baseURL: BASE_SERVER_URL });
 		const response = await request.get(`/events/today`);
-		currentEvents = response.data;
+		fetchingEvents = false;
+		return response.data;
+	};
+
+	const onClickArrow = async () => {
+		location = TODAY;
+		currentEvents = await requestEvents();
 	};
 
 	const onClickEvent = (event) => {
@@ -27,31 +34,55 @@
 	const onClickTitle = () => {
 		// On click without selected event, go to home
 		if (selectedEvent) selectedEvent = null;
-		currentEvents = []; //@TOODO: Use location/reset location
+		currentEvents = [];
+		location = "";
 	};
+
+	onMount(async () => {
+		if (location !== "" && currentEvents.length === 0) {
+			currentEvents = await requestEvents();
+			const eventSelectedInLocation = currentEvents.find(
+				(e) => getEventUrl(e) === location
+			);
+			if (eventSelectedInLocation) {
+				location === getEventUrl(eventSelectedInLocation);
+				selectedEvent = eventSelectedInLocation;
+			}
+		}
+	});
+
+	// @TODO: There is a brief blink while loading events
 </script>
 
 <div class={"layout"}>
-	<div
-		class={`${selectedEvent ? "title-event" : "title"}`}
-		on:click={onClickTitle}
-	>
-		<h1>Azar</h1>
-	</div>
-	{#if selectedEvent}
-		<div class="event">
-			<Event event={selectedEvent} />
-		</div>
-	{:else if currentEvents.length > 0}
-		<EventList {onClickEvent} events={currentEvents} />
+	{#if fetchingEvents}
+		<div>...</div>
 	{:else}
-		<div class="show-events-icon" on:click={requestEvents}>
-			<ArrowRightIcon />
+		<div
+			class={`${selectedEvent ? "title-event" : "title"}`}
+			on:click={onClickTitle}
+		>
+			<a href="#"><h1>Azar</h1></a>
 		</div>
+		{#if selectedEvent}
+			<div class="event">
+				<Event event={selectedEvent} />
+			</div>
+		{:else if location === TODAY}
+			<EventList {onClickEvent} events={currentEvents} />
+		{:else}
+			<div class="show-events-icon" on:click={onClickArrow}>
+				<a href={TODAY}><ArrowRightIcon /></a>
+			</div>
+		{/if}
 	{/if}
 </div>
 
 <style>
+	a {
+		color: inherit;
+		text-decoration: inherit;
+	}
 	.layout {
 		display: flex;
 		flex-direction: column;
