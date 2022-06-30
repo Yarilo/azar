@@ -24,11 +24,11 @@ export default class CafeElDespertar extends Scraper {
 
     url = 'https://cafeeldespertar.com/programacion/';
     name = 'Cafe El Despertar'
-    placeId = '3';
-    // Add address 
+    address = "Calle de la Torrecilla del Leal, 18"
 
     constructor() {
         super();
+        super.init();
     }
 
 
@@ -42,7 +42,7 @@ export default class CafeElDespertar extends Scraper {
         const [day, rawMonth, year] = dateText.split(' ');
         const month = PLACE_MONTH_TO_DATE_MONTH[rawMonth.toLowerCase()];
         const hour = await page.locator('.mec-single-event-time .mec-events-abbr').textContent();
-        const date = getDateFromStrings({day, month, hour, year});
+        const date = getDateFromStrings({ day, month, hour, year });
         return date;
     }
 
@@ -65,7 +65,6 @@ export default class CafeElDespertar extends Scraper {
             price: await this.getPrice(page),
             url: super.getUrl(page),
             description: await this.getDescription(page),
-            placeId: this.placeId,
         }
     }
 

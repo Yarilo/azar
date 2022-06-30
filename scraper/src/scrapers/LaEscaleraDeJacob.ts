@@ -24,9 +24,11 @@ export default class LaEscaleraDeJacob extends Scraper {
 
     url = 'https://www.laescaleradejacob.es/obras/filtro/formato';
     name = 'La Escalera de Jacob'
-    placeId = '2';
+    address = 'Calle de Lavapiés, 9'
+
     constructor() {
         super();
+        super.init();
     }
 
 
@@ -47,7 +49,7 @@ export default class LaEscaleraDeJacob extends Scraper {
         const rawHour = await iframe.locator('.time-session').first().textContent();
         const hour = rawHour.replace(/\s+/g, '').replace('h', '');
 
-        const date = new Date(`${month} ${day}, ${year} ${hour}`); 
+        const date = new Date(`${month} ${day}, ${year} ${hour}`);
         return date;
     }
 

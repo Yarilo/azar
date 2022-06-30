@@ -21,7 +21,10 @@ class Place extends BaseModel {
       autoIncrement: true,
     },
     name: DataTypes.STRING,
-    website: DataTypes.STRING,
+    website: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
     address: DataTypes.STRING,
   };
 

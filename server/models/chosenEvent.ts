@@ -13,9 +13,8 @@ const isToday = (date: Date) => {
   const today = new Date();
   return date.getDate() == today.getDate() &&
     date.getMonth() == today.getMonth() &&
-    date.getFullYear() == today.getFullYear()
-}
-
+    date.getFullYear() == today.getFullYear();
+};
 
 class ChosenEvent extends BaseModel {
   static table = "chosen_events";
@@ -40,14 +39,18 @@ class ChosenEvent extends BaseModel {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const eventsFromTodayAndAfter = await this.where("createdAt", ">", todayAtMidnight,
+    const eventsFromTodayAndAfter = await this.where(
+      "createdAt",
+      ">",
+      todayAtMidnight,
     ).get() as Model[];
 
     // Cannot do multiple where clauses so we filter manually https://github.com/eveningkid/denodb/issues/197
-    const todayEvents = eventsFromTodayAndAfter.filter((event: any) =>  isToday(event.createdAt));
+    const todayEvents = eventsFromTodayAndAfter.filter((event: any) =>
+      isToday(event.createdAt)
+    );
     return todayEvents;
   }
-
 
   /* Relationships */
 

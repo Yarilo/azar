@@ -16,7 +16,10 @@ function getRandom(min: number, max: number) {
 }
 
 function sortEvents(events: SelectedEvent[]): SelectedEvent[] {
-  return events.slice().sort((a: any, b: any) => (a.date.getTime() - b.date.getTime()));
+  return events.slice().sort((
+    a: any,
+    b: any,
+  ) => (a.date.getTime() - b.date.getTime()));
 }
 
 // @TODO: Replace any

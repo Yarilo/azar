@@ -12,20 +12,21 @@ const populateDBWithDummyData = async () => {
   // @TODO: Put this info in the scrapers and save it from there
   await Place.add({
     name: "El Umbral de La Primavera",
-    website: "http://test.com",
+    website: "http://test1.com",
     address: "Calle de La Primavera, 11",
   });
   await Place.add({
     name: "La Escalera de Jacob",
-    website: "http://test.com",
+    website: "http://test2.com",
     address: "Calle de Lavapiés, 9",
   });
 
   await Place.add({
     name: "Cafe El Despertar",
-    website: "http://test.com",
+    website: "http://test3.com",
     address: "Calle de la Torrecilla del Leal, 18",
   });
+
   for (let i = 0; i < TODAY_TEST_EVENTS; i++) {
     await Event.add({
       title: `test-from-today-event-${i}`,
@@ -63,9 +64,9 @@ async function init() {
   await Relationships.belongsTo(Event, Place);
   await Relationships.belongsTo(ChosenEvent, Event);
   await db.link([Place, Event, ChosenEvent]);
-  await db.sync({ drop:true}); // @TODO: Drop true only useful while testing I guess?
+  await db.sync({ drop: true }); // @TODO: Drop true only useful while testing I guess?
 
-  await populateDBWithDummyData();
+  // await populateDBWithDummyData();
 
   console.log("DB started!");
 }

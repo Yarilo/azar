@@ -24,12 +24,13 @@ const parseTextField = (text = '') => text.replace(/\n/g, '').replace(/\t/g, '')
 
 export default class ElUmbralDeLaPrimavera extends Scraper {
 
-    url = 'http://elumbraldeprimavera.com/evento/';
-    name = 'El Umbral de La Primavera'
-    placeId = '1'; // @TODO: Adjust
+    website = 'http://elumbraldeprimavera.com/evento/';
+    name = 'El Umbral de La Primavera';
+    address = "Calle de La Primavera, 11";
 
     constructor() {
         super();
+        super.init();
     }
 
     parseDate(dateText: string) {
@@ -105,12 +106,12 @@ export default class ElUmbralDeLaPrimavera extends Scraper {
     // @TODO: To base class and then we just pass and argument such as "locator" or something like that..
     // as this is almost the same for every scraper?
     async fetchEvents() {
-        console.log(`Processing events for ${this.name}: ${this.url}`)
+        console.log(`Processing events for ${this.name}: ${this.website}`)
 
         const stats = { eventsProcessed: 0, eventsSaved: 0, eventsExpired: 0, errors: 0 };
         const browser = await firefox.launch({ headless: true })
         const page = await browser.newPage();
-        await page.goto(this.url);
+        await page.goto(this.website);
         const events = page.locator('.entry-title');
         const count = await events.count();
         for (let i = 0; i < count; i++) {
@@ -141,7 +142,7 @@ export default class ElUmbralDeLaPrimavera extends Scraper {
             await page.goBack();
         }
 
-        console.log(`Finish processing events for ${this.name}: ${this.url}`)
+        console.log(`Finish processing events for ${this.name}: ${this.website}`)
         console.log(`Stats: ${JSON.stringify(stats)}`);
     }
 
