@@ -48,13 +48,6 @@ class Event extends BaseModel {
     return await this.create(eventFields);
   }
 
-  static async edit(id: string, fields: EventFields): Promise<Model> {
-    await this.where("id", id).update({
-      ...fields,
-    });
-    return this.find(id);
-  }
-
   static async listToday(): Promise<Model[]> {
     const today = new Date().toISOString().split("T")[0];
     const todayAtMidnight = `${today}:T00:00:00.000Z`;

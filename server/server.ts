@@ -33,28 +33,12 @@ router
     const places = await Place.list();
     context.response.body = JSON.stringify(places);
   })
-  .get("/places/:id", async (context) => {
-    const { id = "" } = context.params;
-    const place = await Place.findById(id);
-    context.response.body = place;
-  })
   .post("/places", async (context) => {
     const fields: PlaceFields = await context.request.body({ type: "json" })
       .value;
     const newPlace = await Place.add(fields);
     context.response.body = newPlace;
   })
-  .put("/places/:id", async (context) => {
-    const { id = "" } = context.params;
-    const fields: PlaceFields = await context.request.body({ type: "json" })
-      .value;
-    const updatedPlace = await Place.edit(id, fields);
-    context.response.body = updatedPlace;
-  })
-  .delete("/places/:id", async (context) => {
-    await Place.remove(context.params.id);
-    context.response.status = Status.OK;
-  });
 
 // Events
 router
@@ -97,28 +81,12 @@ router
 
     context.response.body = JSON.stringify(sortEvents(selectedEventsForToday));
   })
-  .get("/events/:id", async (context) => {
-    const { id = "" } = context.params;
-    const place = await Event.findById(id);
-    context.response.body = place;
-  })
   .post("/events", async (context) => {
     const fields: EventFields = await context.request.body({ type: "json" })
       .value;
     const newPlace = await Event.add(fields);
     context.response.body = newPlace;
   })
-  .put("/events/:id", async (context) => {
-    const { id = "" } = context.params;
-    const fields: EventFields = await context.request.body({ type: "json" })
-      .value;
-    const updatedPlace = await Event.edit(id, fields);
-    context.response.body = updatedPlace;
-  })
-  .delete("/events/:id", async (context) => {
-    await Event.remove(context.params.id);
-    context.response.status = Status.OK;
-  });
 
 const app = new Application();
 

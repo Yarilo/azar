@@ -13,16 +13,6 @@ class BaseModel extends Model {
     return await this.create(fields);
   }
 
-  static async edit(id: string, fields: any): Promise<Model> {
-    await this.where("id", id).update({
-      ...fields,
-    });
-    return this.find(id);
-  }
-
-  static async remove(id: string): Promise<Model | Model[]> {
-    return await this.deleteById(id);
-  }
 }
 
 export default BaseModel;

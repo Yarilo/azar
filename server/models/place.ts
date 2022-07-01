@@ -32,13 +32,6 @@ class Place extends BaseModel {
     return await this.create(placeFields);
   }
 
-  static async edit(id: string, fields: PlaceFields): Promise<Model> {
-    await this.where("id", id).update({
-      ...fields,
-    });
-    return this.find(id);
-  }
-
   /* Relationships */
 
   static events() {
