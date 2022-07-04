@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "axios": "0.21.1",
-    "playwright": "^1.22.2"
+    "js-cookie": "3.0.1",
+    "playwright": "1.22.2"
   },
   "type": "module"
 }

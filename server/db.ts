@@ -1,9 +1,18 @@
 import { Database, PostgresConnector } from "https://deno.land/x/denodb/mod.ts";
-import { ChosenEvent, Event, Place } from "./models/index.ts";
+import { ChosenEvent, Event, Place, User } from "./models/index.ts";
 import { Relationships } from "https://deno.land/x/denodb/mod.ts";
+import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 
 const MOCK_DESCRIPTION =
   " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor tempor odio ut euismod. Curabitur sollicitudin turpis lorem, sit amet laoreet nulla posuere at. Integer auctor interdum mi at tincidunt. Aliquam ullamcorper eros eu augue tristique, ac sagittis turpis condimentum. Phasellus interdum nisi quam, nec gravida justo elementum vel. Nulla ut enim consectetur est vulputate tempor eu vestibulum tellus. Sed sagittis fermentum quam, blandit fringilla massa viverra eu. Proin ac rhoncus risus. ";
+
+const createUser = async () => {
+  const MOCK_USERNAME = "yarilo";
+  const MOCK_PASSWORD = "salpica";
+  const hashedPassword = await bcrypt.hash(MOCK_PASSWORD);
+  await User.add({ username: MOCK_USERNAME, password: hashedPassword }); // @TODO: To .env
+  console.log(`User ${MOCK_USERNAME} added to the db successfully`);
+};
 
 const populateDBWithDummyData = async () => {
   const TODAY_TEST_EVENTS = 0;
@@ -63,11 +72,11 @@ async function init() {
 
   await Relationships.belongsTo(Event, Place);
   await Relationships.belongsTo(ChosenEvent, Event);
-  await db.link([Place, Event, ChosenEvent]);
+  await db.link([Place, Event, ChosenEvent, User]);
   await db.sync({ drop: true }); // @TODO: Drop true only useful while testing I guess?
 
-  // await populateDBWithDummyData();
-
+  //await populateDBWithDummyData();
+  await createUser();
   console.log("DB started!");
 }
 

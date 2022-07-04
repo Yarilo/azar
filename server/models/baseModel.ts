@@ -12,7 +12,6 @@ class BaseModel extends Model {
   static async add(fields: any) {
     return await this.create(fields);
   }
-
 }
 
 export default BaseModel;
