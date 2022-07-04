@@ -59,7 +59,7 @@ export default class LaEscaleraDeJacob extends Scraper {
 
   async getDescription(page: any) {
     const description = await page.locator(".description").first()
-      .textContent();
+      .textContent(); // @TODO: Take always the first paragraph only?
     return description;
   }
 

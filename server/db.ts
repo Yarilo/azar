@@ -18,8 +18,8 @@ const createUser = async () => {
 };
 
 const populateDBWithDummyData = async () => {
-  const TODAY_TEST_EVENTS = 0;
-  const OTHER_DAYS_TEST_EVENTS = 0;
+  const TODAY_TEST_EVENTS = 3;
+  const OTHER_DAYS_TEST_EVENTS = 3;
 
   // @TODO: Put this info in the scrapers and save it from there
   await Place.add({

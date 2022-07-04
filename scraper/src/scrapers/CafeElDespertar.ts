@@ -56,7 +56,7 @@ export default class CafeElDespertar extends Scraper {
 
   async getDescription(page: any): Promise<string> {
     const description = await page.locator(".mec-single-event-description")
-      .textContent();
+      .textContent();  // @TODO: Take always the first paragraph only?
     return description;
   }
 

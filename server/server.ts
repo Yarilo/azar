@@ -40,5 +40,18 @@ app.use(async (ctx, next) => {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+// Serve client assets
+app.use(async (context, next) => {
+  try {
+    await context.send({
+      root: `${Deno.cwd()}/client/public`,
+      index: "index.html",
+    });
+    next();
+  } catch {
+    next();
+  }
+});
+
 await db.init();
 await app.listen({ port: 4242 });
