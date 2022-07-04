@@ -1,15 +1,20 @@
 import scrapers from "./scrapers/index.js";
 import { ProviderRequest } from './providers/index.js'
-import cookie from 'js-cookie';
-import { URLS, AUTH_COOKIE} from './constants.js';
+import { URLS } from './constants.js';
 
+
+const { AZAR_USERNAME = '', AZAR_PASSWORD = '' } = process.env;
 
 async function run() {
 
+  if (!AZAR_USERNAME || !AZAR_PASSWORD) {
+    throw new Error('Unable to obtain credentials from environment');
+  }
+
   try {
     console.log('Logging in the server...')
-    const response = await ProviderRequest.post(URLS.LOGIN, {username: 'yarilo', password: 'salpica'});
-    const {auth_token} = response;
+    const response = await ProviderRequest.post(URLS.LOGIN, { username: AZAR_USERNAME, password: AZAR_PASSWORD });
+    const { auth_token } = response;
     ProviderRequest.authenticate(auth_token);
   } catch (error) {
     console.log(`Error logging, ${error}`)

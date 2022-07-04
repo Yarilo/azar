@@ -7,11 +7,14 @@ const MOCK_DESCRIPTION =
   " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor tempor odio ut euismod. Curabitur sollicitudin turpis lorem, sit amet laoreet nulla posuere at. Integer auctor interdum mi at tincidunt. Aliquam ullamcorper eros eu augue tristique, ac sagittis turpis condimentum. Phasellus interdum nisi quam, nec gravida justo elementum vel. Nulla ut enim consectetur est vulputate tempor eu vestibulum tellus. Sed sagittis fermentum quam, blandit fringilla massa viverra eu. Proin ac rhoncus risus. ";
 
 const createUser = async () => {
-  const MOCK_USERNAME = "yarilo";
-  const MOCK_PASSWORD = "salpica";
-  const hashedPassword = await bcrypt.hash(MOCK_PASSWORD);
-  await User.add({ username: MOCK_USERNAME, password: hashedPassword }); // @TODO: To .env
-  console.log(`User ${MOCK_USERNAME} added to the db successfully`);
+  const username = Deno.env.get('AZAR_USERNAME');
+  const password = Deno.env.get('AZAR_PASSWORD');
+  if (!username || !password) {
+    throw new Error('No credentials found in env variables while creating initial user');
+  }
+  const hashedPassword = await bcrypt.hash(password);
+  await User.add({ username, password:  hashedPassword });
+  console.log(`User ${username} added to the db successfully`);
 };
 
 const populateDBWithDummyData = async () => {
