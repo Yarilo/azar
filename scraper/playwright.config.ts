@@ -1,6 +1,6 @@
-import { type PlaywrightTestConfig, devices } from '@playwright/test';
+import { PlaywrightTestConfig } from '@playwright/test';
 
-const config: PlaywrightTestConfig = {
+const config: any = {
   testDir: './src',
   projects: [
     {

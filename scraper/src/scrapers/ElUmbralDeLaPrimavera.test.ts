@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import type { Page } from '@playwright'
 import ElUmbralDeLaPrimavera from "./ElUmbralDeLaPrimavera.js";
 
 const EXPECTED_EVENT_URL = 'https://elumbraldeprimavera.com/evento/feliz-lunes/';
@@ -12,7 +11,9 @@ const EXPECTED_EVENT = {
   placeId: ''
 }
 
-test('Processes a known event successfully', async ({ page }: { page: Page }) => {
+
+// @TODO: Type
+test('Processes a known event successfully', async ({ page }: { page: any }) => {
   const scraper = new ElUmbralDeLaPrimavera();
   await page.goto(EXPECTED_EVENT_URL);
 
