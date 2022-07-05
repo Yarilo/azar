@@ -1,4 +1,4 @@
-import { EventFields, PlaceFields } from "../types/index.js";
+import type { EventFields, PlaceFields } from "../types/index.js";
 import { ProviderRequest } from "../providers/index.js";
 import { URLS } from "../constants.js";
 

@@ -1,2 +1,2 @@
-declare module "playwright";
-declare module "js-cookie";
+declare module 'playwright';
+declare module '@playwright/test';

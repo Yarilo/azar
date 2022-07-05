@@ -1,5 +1,5 @@
 import { default as axios } from "axios";
-import { EventFields, PlaceFields, UserFields } from "../types/index.js";
+import type { EventFields, PlaceFields, UserFields } from "../types/index.js";
 import { URLS, BASE_URL } from '../constants.js'
 
 const instance = axios.create({

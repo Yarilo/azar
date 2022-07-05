@@ -1,6 +1,5 @@
 import { firefox } from "playwright";
-import { default as axios } from "axios";
-import { EventFields } from "../types/index.js";
+import type { EventFields } from "../types/index.js";
 import Scraper from "./Scraper.js";
 import { getDateFromStrings, now } from "./utils/index.js";
 

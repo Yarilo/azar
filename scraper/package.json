@@ -4,7 +4,7 @@
   "description": "Web scraper to fetch experiences for Azar",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx playwright test --config=playwright.config.ts",
     "start": "npx tsc && node dist/index"
   },
   "author": "",
