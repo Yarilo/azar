@@ -1,4 +1,8 @@
-import { Database, PostgresConnector } from "https://deno.land/x/denodb/mod.ts";
+import {
+  Database,
+  PostgresConnector,
+  PostgresOptions,
+} from "https://deno.land/x/denodb/mod.ts";
 import { ChosenEvent, Event, Place, User } from "./models/index.ts";
 import { Relationships } from "https://deno.land/x/denodb/mod.ts";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
@@ -7,13 +11,15 @@ const MOCK_DESCRIPTION =
   " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor tempor odio ut euismod. Curabitur sollicitudin turpis lorem, sit amet laoreet nulla posuere at. Integer auctor interdum mi at tincidunt. Aliquam ullamcorper eros eu augue tristique, ac sagittis turpis condimentum. Phasellus interdum nisi quam, nec gravida justo elementum vel. Nulla ut enim consectetur est vulputate tempor eu vestibulum tellus. Sed sagittis fermentum quam, blandit fringilla massa viverra eu. Proin ac rhoncus risus. ";
 
 const createUser = async () => {
-  const username = Deno.env.get('AZAR_USERNAME');
-  const password = Deno.env.get('AZAR_PASSWORD');
-  if (!username || !password) {
-    throw new Error('No credentials found in env variables while creating initial user');
+  const username = Deno.env.get("AZAR_USERNAME");
+  const password = Deno.env.get("AZAR_PASSWORD");
+  if (!username || !password) {
+    throw new Error(
+      "No credentials found in env variables while creating initial user",
+    );
   }
   const hashedPassword = await bcrypt.hash(password);
-  await User.add({ username, password:  hashedPassword });
+  await User.add({ username, password: hashedPassword });
   console.log(`User ${username} added to the db successfully`);
 };
 
@@ -62,15 +68,25 @@ const populateDBWithDummyData = async () => {
   }
 };
 
-async function init() {
-  const connector = new PostgresConnector({
-    database: "azar",
-    host: "localhost",
-    username: "azar",
-    password: "test",
-    port: 5432,
+const getDBConfig = (): PostgresOptions => {
+  const dbConfig = {
+    database: Deno.env.get("AZAR_DB_NAME"),
+    host: Deno.env.get("AZAR_DB_HOST"),
+    username: Deno.env.get("AZAR_DB_USERNAME"),
+    password: Deno.env.get("AZAR_DB_PASSWORD"),
+    port: Number(Deno.env.get("AZAR_DB_PORT")),
+  };
+  Object.entries(dbConfig).forEach(([key, value]) => {
+    if (!value) {
+      throw new Error(`Error getting db config, no value found for: ${key}`);
+    }
   });
+  return dbConfig as PostgresOptions;
+};
 
+async function init() {
+  const dbConfig = getDBConfig();
+  const connector = new PostgresConnector(dbConfig);
   const db = new Database(connector);
 
   await Relationships.belongsTo(Event, Place);
