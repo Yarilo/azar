@@ -14,7 +14,7 @@
 
 	const TODAY = "#today";
 	const ICON_DOOR_SIZE = 40;
-	const BASE_SERVER_URL = "http://azar.deno.dev";
+	const BASE_SERVER_URL = "https://azar.deno.dev"; // @TODO: To env
 
 	const requestEvents = async () => {
 		fetchingEvents = true;
