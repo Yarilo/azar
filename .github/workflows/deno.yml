@@ -32,7 +32,7 @@ jobs:
           deno-version: v1.x
 
       - name: Verify formatting
-        run: deno fmt --check
+        run: cd server/ && deno fmt --check
 
       - name: Run linter
         run: deno lint
