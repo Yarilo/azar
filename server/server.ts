@@ -3,6 +3,8 @@ import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import db from "./db.ts";
 import { auth, events, places } from "./routes/index.ts";
 
+const SERVER_PORT = 80;
+
 const router = new Router();
 router
   .get("/places", auth.validate, places.list)
@@ -54,4 +56,4 @@ app.use(async (context, next) => {
 });
 
 await db.init();
-await app.listen({ port: 4242 });
+await app.listen({ port: SERVER_PORT });
