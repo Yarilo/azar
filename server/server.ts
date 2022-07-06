@@ -20,11 +20,7 @@ router.post("/login", auth.login);
 
 const app = new Application();
 
-app.use(
-  oakCors({
-    origin: "http://azar.deno.dev",
-  }),
-);
+app.use(oakCors());
 
 app.use(logger.logger);
 app.use(logger.responseTime);
