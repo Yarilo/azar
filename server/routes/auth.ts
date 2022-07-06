@@ -2,7 +2,7 @@ import { Status } from "https://deno.land/x/oak/mod.ts";
 import { User } from "../models/index.ts";
 import { UserFields } from "../models/user.ts";
 import * as djwt from "https://deno.land/x/djwt@v2.7/mod.ts";
-import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
+import * as bcrypt from "https://deno.land/x/bcrypt@v0.3.0/mod.ts";
 
 const ONE_DAY_MINUTES = 60 * 60 * 24;
 // @TODO: Move this to another place
