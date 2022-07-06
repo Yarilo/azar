@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import * as axios from "axios";
-	import { ArrowRightIcon } from "svelte-feather-icons";
 	import { getEventUrl } from "./utils/";
 	import Event from "./Event.svelte";
 	import EventList from "./EventList.svelte";
+	import DoorClosed from "./icons/DoorClosed.svelte";
+	import DoorOpen from "./icons/DoorOpen.svelte";
+
 	let currentEvents = [];
 	let location = `#${window.location.href.split("#")[1]}`;
 	let selectedEvent = null;
 	let fetchingEvents = false;
 
 	const TODAY = "#today";
+	const ICON_DOOR_SIZE = 40;
 	const BASE_SERVER_URL = "http://localhost:4242";
 
 	const requestEvents = async () => {
@@ -51,11 +54,16 @@
 		}
 	});
 
+	let doorOpen = false;
+	const switchDoor = (status: boolean) => {
+		doorOpen = status;
+	};
+
 	// @TODO: There is a brief blink while loading events
 </script>
 
 <div class={"layout"}>
-	{#if fetchingEvents}
+	{#if fetchingEvents && location === TODAY}
 		<div>...</div>
 	{:else}
 		<div
@@ -71,8 +79,18 @@
 		{:else if location === TODAY}
 			<EventList {onClickEvent} events={currentEvents} />
 		{:else}
-			<div class="show-events-icon" on:click={onClickArrow}>
-				<a href={TODAY}><ArrowRightIcon /></a>
+			<div
+				on:click={onClickArrow}
+				on:mouseenter={() => switchDoor(true)}
+				on:mouseleave={() => switchDoor(false)}
+			>
+				<a href={TODAY}>
+					{#if doorOpen}
+						<DoorOpen size={ICON_DOOR_SIZE} />
+					{:else}
+						<DoorClosed size={ICON_DOOR_SIZE} />
+					{/if}
+				</a>
 			</div>
 		{/if}
 	{/if}
@@ -106,14 +124,6 @@
 		cursor: pointer;
 	}
 
-	.start-circle {
-		cursor: pointer;
-		height: 25px;
-		width: 25px;
-		background-color: white;
-		border-radius: 50%;
-	}
-
 	.event {
 		display: flex;
 		flex-direction: column;
@@ -124,9 +134,5 @@
 		display: flex;
 		flex-direction: column;
 		padding-left: 10px;
-	}
-
-	.show-events-icon {
-		cursor: pointer;
 	}
 </style>

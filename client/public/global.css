@@ -1,4 +1,7 @@
-html, body {
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
+
+html,
+body {
     background-color: black;
     color: white;
     margin: 0;
