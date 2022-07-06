@@ -22,7 +22,7 @@ const app = new Application();
 
 app.use(
   oakCors({
-    origin: "http://localhost:8080",
+    origin: "http://azar.deno.dev",
   }),
 );
 

@@ -1,6 +1,6 @@
 
 
-export const BASE_URL =  'http://localhost:4242';
+export const BASE_URL =  'http://azar.deno.dev';
 export const enum URLS {
     PLACES = '/places',
     EVENTS = '/events',

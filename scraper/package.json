@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "npx playwright test --config=playwright.config.ts",
-    "start": "npx tsc && node dist/index"
+    "start": "npx tsc && node dist/src/index"
   },
   "author": "",
   "license": "ISC",
