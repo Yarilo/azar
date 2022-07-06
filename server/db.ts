@@ -10,6 +10,13 @@ import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 const MOCK_DESCRIPTION =
   " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor tempor odio ut euismod. Curabitur sollicitudin turpis lorem, sit amet laoreet nulla posuere at. Integer auctor interdum mi at tincidunt. Aliquam ullamcorper eros eu augue tristique, ac sagittis turpis condimentum. Phasellus interdum nisi quam, nec gravida justo elementum vel. Nulla ut enim consectetur est vulputate tempor eu vestibulum tellus. Sed sagittis fermentum quam, blandit fringilla massa viverra eu. Proin ac rhoncus risus. ";
 
+// Needed for deno deploy: https://github.com/JamesBroadberry/deno-bcrypt/issues/26
+const hash = (password: string): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const hasshedPassword = bcrypt.hashSync(password);
+    resolve(hasshedPassword);
+  });
+
 const createUser = async () => {
   const username = Deno.env.get("AZAR_USERNAME");
   const password = Deno.env.get("AZAR_PASSWORD");
@@ -18,7 +25,7 @@ const createUser = async () => {
       "No credentials found in env variables while creating initial user",
     );
   }
-  const hashedPassword = await bcrypt.hash(password);
+  const hashedPassword = await hash(password);
   await User.add({ username, password: hashedPassword });
   console.log(`User ${username} added to the db successfully`);
 };

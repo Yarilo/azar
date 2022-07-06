@@ -12,6 +12,13 @@ const key = await crypto.subtle.generateKey(
   ["sign", "verify"],
 );
 
+// Needed for deno deploy: https://github.com/JamesBroadberry/deno-bcrypt/issues/26
+const compare = (passwordA: string, passwordB: string): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const passwordMatches = bcrypt.compareSync(passwordA, passwordB);
+    resolve(passwordMatches);
+  });
+
 export default {
   login: async (context: any) => {
     const fields: UserFields = await context.request.body({ type: "json" })
@@ -21,10 +28,7 @@ export default {
       context.response.status = Status.Forbidden;
       return;
     }
-    const passwordMatches = await bcrypt.compare(
-      fields.password,
-      user.password,
-    );
+    const passwordMatches = await compare(fields.password, user.password);
     if (passwordMatches) {
       context.response.status = Status.OK;
       const jwtToken = await djwt.create({ alg: "HS512", typ: "JWT" }, {
