@@ -26,9 +26,8 @@ app.use(
   }),
 );
 
-
-app.use(logger.logger)
-app.use(logger.responseTime)
+app.use(logger.logger);
+app.use(logger.responseTime);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
