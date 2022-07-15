@@ -28,7 +28,7 @@ async function listToday(tableName: any) {
 
   // Cannot do multiple where clauses so we filter manually https://github.com/eveningkid/denodb/issues/197
   const todayEvents = eventsFromTodayAndAfter.filter((event: any) =>
-    isToday(event.created_at)
+    isToday(event[whereColumn])
   );
   return todayEvents;
 }
