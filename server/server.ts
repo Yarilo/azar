@@ -43,5 +43,4 @@ app.use(async (context, next) => {
 });
 
 await ProviderDB.connect();
-await initializeDatabase({ populateWithDummyData: false });
 await app.listen({ port: SERVER_PORT });
