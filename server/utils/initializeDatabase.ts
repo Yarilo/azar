@@ -73,7 +73,7 @@ const populateDBWithDummyData = async () => {
 };
 
 export default async function ({ populateWithDummyData = false }) {
-  console.log('Initializating database...');
+  console.log("Initializating database...");
   await ProviderDB.runQuery(`SET CLIENT_ENCODING TO 'LATIN9'`); // To store accents and so on, https://www.postgresql.org/docs/current/multibyte.html
   await ProviderDB.runQuery(Place.createTableQuery);
   await ProviderDB.runQuery(Event.createTableQuery);
@@ -82,7 +82,7 @@ export default async function ({ populateWithDummyData = false }) {
   await createUser();
   if (populateWithDummyData) {
     await populateDBWithDummyData();
-    console.log('DB populated with dummy data')
+    console.log("DB populated with dummy data");
   }
-  console.log('DB initializated successfully!');
+  console.log("DB initializated successfully!");
 }
