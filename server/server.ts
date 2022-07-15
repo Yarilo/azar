@@ -1,7 +1,8 @@
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import logger from "https://deno.land/x/oak_logger/mod.ts";
-import db from "./db.ts";
+import { ProviderDB } from "./providers/index.ts";
+import { initializeDatabase } from './utils/index.ts'
 import { auth, events, places } from "./routes/index.ts";
 
 const SERVER_PORT = 80;
@@ -41,5 +42,6 @@ app.use(async (context, next) => {
   }
 });
 
-await db.init();
+await ProviderDB.connect();
+await initializeDatabase({ populateWithDummyData: false });
 await app.listen({ port: SERVER_PORT });

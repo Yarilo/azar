@@ -8,7 +8,7 @@ const EXPECTED_EVENT = {
   price: 14,
   url: 'https://elumbraldeprimavera.com/evento/feliz-lunes/',
   description: 'Al despertar en su lunes libre, Sara descubre que su sueño se ha hecho realidad: le han ofrecido el papel protagonista de una película. Para celebrarlo, acudirá al cariño de los comentarios de su Instagram, el amor de su match de Tinder, y la compañía de sus YouTubers preferidos.',
-  placeId: ''
+  place_id: ''
 }
 
 
@@ -18,6 +18,6 @@ test('Processes a known event successfully', async ({ page }: { page: any }) => 
   await page.goto(EXPECTED_EVENT_URL);
 
   const processedEvent = await scraper.processEvent(page);
-  
+
   expect(processedEvent).toStrictEqual(EXPECTED_EVENT)
 });

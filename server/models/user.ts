@@ -1,33 +1,23 @@
-import { DataTypes } from "https://deno.land/x/denodb/mod.ts";
-import BaseModel from "./baseModel.ts";
+import { timestamp } from "../utils/index.ts";
 
-export type UserFields = {
-  readonly id?: string;
+export const tableName = "users";
+export interface columns {
+  readonly id?: number;
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
   username: string;
   password: string;
-};
-
-class User extends BaseModel {
-  static table = "user";
-  static timestamps = true;
-  static fields = {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    username: {
-      type: DataTypes.STRING,
-      unique: true,
-    },
-    password: DataTypes.TEXT,
-  };
-
-  static async add(userFields: UserFields) {
-    return await this.create(userFields);
-  }
 }
 
-export default User;
+export const createTableQuery = (`
+  ${timestamp.sqlFunction()}
+
+  CREATE TABLE IF NOT EXISTS ${tableName}(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
+  );
+
+  ${timestamp.trigger(tableName)}`);

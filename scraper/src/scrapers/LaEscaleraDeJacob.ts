@@ -22,7 +22,7 @@ export default class LaEscaleraDeJacob extends Scraper {
   website = "https://www.laescaleradejacob.es/obras/filtro/formato";
   name = "La Escalera de Jacob";
   address = "Calle de Lavapiés, 9";
-  placeId = "";
+  place_id = "";
 
   constructor() {
     super();
@@ -70,7 +70,7 @@ export default class LaEscaleraDeJacob extends Scraper {
       price: await this.getPrice(page),
       url: super.getUrl(page),
       description: await this.getDescription(page),
-      placeId: this.placeId,
+      place_id: this.place_id,
     };
   }
 
@@ -139,8 +139,7 @@ export default class LaEscaleraDeJacob extends Scraper {
         stats.eventsSaved += 1;
       } catch (error: any) {
         console.log(
-          `Error trying to process or save event: ${
-            error.statusMessage || error
+          `Error trying to process or save event: ${error.statusMessage || error
           }`,
         );
         stats.errors += 1;

@@ -1,42 +1,27 @@
-import { DataTypes, Model } from "https://deno.land/x/denodb/mod.ts";
-import BaseModel from "./baseModel.ts";
-import Event from "./event.ts";
+import { timestamp } from "../utils/index.ts";
 
-export type PlaceFields = {
-  readonly id?: string;
-  readonly createdAt?: Date;
-  readonly updatedAt?: Date;
+export const tableName = "places";
+export interface columns {
+  readonly id?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
   name: string;
   website: string;
   address: string;
-};
-
-class Place extends BaseModel {
-  static table = "places";
-  static timestamps = true;
-  static fields = {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    name: DataTypes.STRING,
-    website: {
-      type: DataTypes.STRING,
-      unique: true,
-    },
-    address: DataTypes.STRING,
-  };
-
-  static async add(placeFields: PlaceFields) {
-    return await this.create(placeFields);
-  }
-
-  /* Relationships */
-
-  static events() {
-    return this.hasMany(Event);
-  }
 }
 
-export default Place;
+export const createTableQuery = (`
+  ${timestamp.sqlFunction()}
+
+  CREATE TABLE IF NOT EXISTS ${tableName}(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    website VARCHAR(200) NOT NULL,
+    address TEXT,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
+  );
+
+  ${timestamp.trigger(tableName)}`);
+
+// @TODO: Relationships

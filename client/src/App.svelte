@@ -12,9 +12,14 @@
 	let selectedEvent = null;
 	let fetchingEvents = false;
 
+	const LOCALHOST = "http://localhost";
+	const AZAR_SERVER_URL = "https://azar.deno.dev";
+
 	const TODAY = "#today";
 	const ICON_DOOR_SIZE = 40;
-	const BASE_SERVER_URL = "https://azar.deno.dev"; // @TODO: To env
+	const BASE_SERVER_URL = window.location.href.includes(LOCALHOST)
+		? LOCALHOST
+		: AZAR_SERVER_URL;
 
 	const requestEvents = async () => {
 		fetchingEvents = true;

@@ -1,15 +1,19 @@
+import { Status } from "https://deno.land/x/oak/mod.ts";
 import { Place } from "../models/index.ts";
-import { PlaceFields } from "../models/place.ts";
+import { ProviderDB } from "../providers/index.ts";
 
 export default {
   add: async (context: any) => {
-    const fields: PlaceFields = await context.request.body({ type: "json" })
+    const fields: Place.columns = await context.request.body({ type: "json" })
       .value;
-    const newPlace = await Place.add(fields);
-    context.response.body = newPlace;
+    await ProviderDB.insert(Place.tableName, fields);
+    context.response.status = Status.OK;
   },
   list: async (context: any) => {
-    const places = await Place.list();
+    const places = await ProviderDB.find(
+      Place.tableName,
+      "*",
+    ) as Place.columns[];
     context.response.body = JSON.stringify(places);
   },
 };

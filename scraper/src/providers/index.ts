@@ -1,1 +1,1 @@
-export {default as ProviderRequest} from './request.js'
+export { default as ProviderRequest } from './request.js'

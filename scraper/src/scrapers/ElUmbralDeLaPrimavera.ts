@@ -25,7 +25,7 @@ export default class ElUmbralDeLaPrimavera extends Scraper {
   website = "http://elumbraldeprimavera.com/evento/";
   name = "El Umbral de La Primavera";
   address = "Calle de La Primavera, 11";
-  placeId = "";
+  place_id = "";
 
   constructor() {
     super();
@@ -100,7 +100,7 @@ export default class ElUmbralDeLaPrimavera extends Scraper {
       price: await this.getPrice(page),
       url: this.getUrl(page),
       description: await this.getDescription(page),
-      placeId: this.placeId,
+      place_id: this.place_id,
     };
   }
 

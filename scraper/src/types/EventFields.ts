@@ -4,7 +4,7 @@ type EventFields = {
   price: number;
   date: Date;
   url: string;
-  placeId: string;
+  place_id: string;
   // @TODO: Images
 };
 

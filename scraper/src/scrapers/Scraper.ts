@@ -3,7 +3,7 @@ import { ProviderRequest } from "../providers/index.js";
 import { URLS } from "../constants.js";
 
 abstract class Scraper {
-  placeId: string;
+  place_id: string;
   request: any;
 
   website: string;
@@ -11,7 +11,7 @@ abstract class Scraper {
   address: string;
 
   constructor() {
-    this.placeId = "";
+    this.place_id = "";
     this.website = "";
     this.name = "";
     this.address = "";
@@ -32,7 +32,7 @@ abstract class Scraper {
     }
 
     try {
-      this.placeId = await this.getPlaceId(); // @TODO: This call is not needed if the one above succeeds
+      this.place_id = await this.getPlaceId(); // @TODO: This call is not needed if the one above succeeds
     } catch (error: any) {
       console.log(
         `Error initializating place id, ${error.statusMessage || error}`,
@@ -60,7 +60,7 @@ abstract class Scraper {
 
   async savePlace(place: PlaceFields): Promise<void> {
     const savedPlace = await ProviderRequest.post(URLS.PLACES, place);
-    this.placeId = savedPlace.placeId;
+    this.place_id = savedPlace.place_id;
   }
 
   async getPlaceId(): Promise<string> {

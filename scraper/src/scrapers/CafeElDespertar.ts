@@ -22,7 +22,7 @@ export default class CafeElDespertar extends Scraper {
   website = "https://cafeeldespertar.com/programacion/";
   name = "Cafe El Despertar";
   address = "Calle de la Torrecilla del Leal, 18";
-  placeId = "";
+  place_id = "";
 
   constructor() {
     super();
@@ -67,7 +67,7 @@ export default class CafeElDespertar extends Scraper {
       price: await this.getPrice(page),
       url: super.getUrl(page),
       description: await this.getDescription(page),
-      placeId: this.placeId,
+      place_id: this.place_id,
     };
   }
 
@@ -102,8 +102,7 @@ export default class CafeElDespertar extends Scraper {
         stats.eventsSaved += 1;
       } catch (error: any) {
         console.log(
-          `Error trying to process or save event: ${
-            error.statusMessage || error
+          `Error trying to process or save event: ${error.statusMessage || error
           }`,
         );
         stats.errors += 1;

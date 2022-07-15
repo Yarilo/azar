@@ -1,4 +1,4 @@
-export { default as Place } from "./place.ts";
-export { default as Event } from "./event.ts";
-export { default as ChosenEvent } from "./chosenEvent.ts";
-export { default as User } from "./user.ts";
+export * as Place from "./place.ts";
+export * as Event from "./event.ts";
+export * as ChosenEvent from "./chosenEvent.ts";
+export * as User from "./user.ts";

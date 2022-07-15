@@ -1,6 +1,6 @@
 import { Status } from "https://deno.land/x/oak/mod.ts";
 import { User } from "../models/index.ts";
-import { UserFields } from "../models/user.ts";
+import { ProviderDB } from "../providers/index.ts";
 import * as djwt from "https://deno.land/x/djwt@v2.7/mod.ts";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 
@@ -21,9 +21,13 @@ const compare = (passwordA: string, passwordB: string): Promise<boolean> =>
 
 export default {
   login: async (context: any) => {
-    const fields: UserFields = await context.request.body({ type: "json" })
+    const fields: User.columns = await context.request.body({ type: "json" })
       .value;
-    const [user] = await User.where("username", fields.username).get() as any[];
+    const [user] = await ProviderDB.find(
+      User.tableName,
+      "*",
+      `where username = '${fields.username}'`,
+    ) as User.columns[];
     if (!user) {
       context.response.status = Status.Forbidden;
       return;
