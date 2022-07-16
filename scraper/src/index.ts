@@ -29,6 +29,8 @@ async function run() {
       console.log(`Error processing: ${s.name}`, error);
       continue;
     }
+    console.log('Finished processing events');
+    process.exit(0);
   }
 }
 
