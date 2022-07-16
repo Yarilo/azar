@@ -67,7 +67,7 @@
 	// @TODO: There is a brief blink while loading events
 </script>
 
-<div class={"layout"}>
+<div class={`layout ${!location || location === "#" ? "initial" : ""}`}>
 	{#if fetchingEvents && location === TODAY}
 		<div>...</div>
 	{:else}
@@ -147,6 +147,9 @@
 			padding-left: 30px;
 			padding-right: 30px;
 			padding-bottom: 0px;
+		}
+		.layout.initial {
+			width: initial;
 		}
 		.event {
 			max-height: 70%;
