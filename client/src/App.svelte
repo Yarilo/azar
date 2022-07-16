@@ -155,5 +155,9 @@
 			max-height: 70%;
 			width: 100%;
 		}
+		.title-event h1 {
+			top: 0;
+			left: 30px; /* left-padding of layout value */
+		}
 	}
 </style>
