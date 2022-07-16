@@ -148,5 +148,9 @@
 			padding-right: 30px;
 			padding-bottom: 0px;
 		}
+		.event {
+			max-height: 70%;
+			width: 100%;
+		}
 	}
 </style>
