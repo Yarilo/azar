@@ -140,4 +140,13 @@
 		flex-direction: column;
 		padding-left: 10px;
 	}
+
+	@media (max-width: 800px) {
+		.layout {
+			width: 70%;
+			padding-left: 30px;
+			padding-right: 30px;
+			padding-bottom: 0px;
+		}
+	}
 </style>
