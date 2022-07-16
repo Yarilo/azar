@@ -67,7 +67,7 @@
 	// @TODO: There is a brief blink while loading events
 </script>
 
-<div class={`layout ${!location || location === "#" ? "initial" : ""}`}>
+<div class={`layout ${location === TODAY || selectedEvent ? "" : "initial"}`}>
 	{#if fetchingEvents && location === TODAY}
 		<div>...</div>
 	{:else}
