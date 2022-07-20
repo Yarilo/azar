@@ -47,9 +47,8 @@
 	onMount(async () => {
 		if (currentEvents.length === 0) {
 			currentEvents = await requestEvents();
-			const eventNameInLocation = encodeURI(
-				window.location.pathname.slice(1)
-			);
+			const eventNameInLocation = window.location.pathname.slice(1);
+
 			const eventSelectedInLocation = currentEvents.find((e) => {
 				return getEventUrl(e) === eventNameInLocation;
 			});
