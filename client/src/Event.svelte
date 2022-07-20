@@ -5,17 +5,19 @@
 	// @TODO: Perhaps put an arrow
 </script>
 
-<h1>{parseTitle(event.title)}</h1>
-<p class="event-description">{event.description}</p>
+{#if event}
+	<h1>{parseTitle(event.title)}</h1>
+	<p class="event-description">{event.description}</p>
 
-<br />
-<p />
+	<br />
+	<p />
 
-<div>
-	<a href={event.url} target="_blank">{event.place.name}</a>
-	<p>{parseDate(event.date)}</p>
-	<p>{event.price} €</p>
-</div>
+	<div>
+		<a href={event.url} target="_blank">{event.place.name}</a>
+		<p>{parseDate(event.date)}</p>
+		<p>{event.price} €</p>
+	</div>
+{/if}
 
 <style>
 	a {

@@ -6,7 +6,7 @@ import { auth, events, places } from "./routes/index.ts";
 
 const SERVER_PORT = 80;
 
-const router = new Router();
+const router = new Router({ prefix: "/api" });
 router
   .get("/places", auth.validate, places.list)
   .post("/places", auth.validate, places.add);
@@ -30,13 +30,19 @@ app.use(router.allowedMethods());
 
 // Serve client assets
 app.use(async (context, next) => {
+  const { pathname } = context.request.url;
+  const path = pathname.includes("build") || pathname.includes("css")
+    ? pathname
+    : "/"; // @TODO: UGLY as big as my head, review
   try {
     await context.send({
       root: `${Deno.cwd()}/client/public`,
       index: "index.html",
+      path,
     });
     next();
-  } catch {
+  } catch (error) {
+    console.log("error", error);
     next();
   }
 });

@@ -1,5 +1,6 @@
 <script lang="ts">
     import { getEventUrl, parseTitle, parseDate } from "./utils/";
+    import { link } from "svelte-routing";
 
     export let events = [];
     export let onClickEvent;
@@ -7,8 +8,14 @@
 
 <ul class="event-list">
     {#each events as event}
-        <li on:click={() => onClickEvent(event)}>
-            <h2><a href={getEventUrl(event)}>{parseTitle(event.title)}</a></h2>
+        <li>
+            <h2>
+                <a
+                    on:click={() => onClickEvent(event)}
+                    href={getEventUrl(event)}
+                    use:link>{parseTitle(event.title)}</a
+                >
+            </h2>
             <div class="event-subtitle">
                 <small>{event.place.name}</small>
                 <small>{parseDate(event.date)}</small>
