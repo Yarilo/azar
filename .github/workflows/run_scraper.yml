@@ -1,4 +1,4 @@
-name: Scraper
+name: Run scraper
 on:
   schedule:
     - cron: "*/10 * * * *"
