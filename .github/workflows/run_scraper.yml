@@ -1,7 +1,12 @@
 name: Run scraper
+env:
+    AZAR_SERVER_URL: ${{secrets.AZAR_SERVER_URL}}
+    AZAR_USERNAME: ${{secrets.AZAR_USERNAME}}
+    AZAR_PASSWORD: ${{secrets.AZAR_PASSWORD}}
+    
 on:
   schedule:
-    - cron: "17 23 * * *"
+    - cron: "*/10 * * * *"
 
 jobs:
   scraper:
