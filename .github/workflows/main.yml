@@ -1,0 +1,22 @@
+name: Scraper
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+
+jobs:
+  scraper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.3.0
+        with:
+          node-version: 16.15.0
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+    
+      - name: Install scraper dependencies
+        run: cd scraper/ && npm install
+        
+      # TODO: Run tests
+      - name: Run scraper
+        run: cd scraper && npm run start
