@@ -1,12 +1,7 @@
 name: Run scraper
-env:
-    AZAR_SERVER_URL: ${{secrets.AZAR_SERVER_URL}}
-    AZAR_USERNAME: ${{secrets.AZAR_USERNAME}}
-    AZAR_PASSWORD: ${{secrets.AZAR_PASSWORD}}
-    
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "52 * * * *"
 
 jobs:
   scraper:
@@ -27,6 +22,10 @@ jobs:
         
       # TODO: Run tests
       - name: Run scraper
+        env:
+            AZAR_SERVER_URL: ${{secrets.AZAR_SERVER_URL}}
+            AZAR_USERNAME: ${{secrets.AZAR_USERNAME}}
+            AZAR_PASSWORD: ${{secrets.AZAR_PASSWORD}}
         run: cd scraper && npm run start
       
       # TODO: Pass correct env variables
