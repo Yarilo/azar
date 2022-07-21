@@ -1,7 +1,7 @@
 name: Run scraper
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "17 23 * * *"
 
 jobs:
   scraper:
