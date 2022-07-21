@@ -1,7 +1,7 @@
 name: Run scraper
 on:
   schedule:
-    - cron: "02 * * * *"
+    - cron: "17 23 * * *"
 
 jobs:
   scraper:
@@ -23,3 +23,5 @@ jobs:
       # TODO: Run tests
       - name: Run scraper
         run: cd scraper && npm run start
+      
+      # TODO: Pass correct env variables
