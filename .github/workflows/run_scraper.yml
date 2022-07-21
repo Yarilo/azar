@@ -1,0 +1,31 @@
+name: Run scraper
+on:
+  schedule:
+    - cron: "17 23 * * *"
+
+jobs:
+  scraper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v3
+    
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.3.0
+        with:
+          node-version: 16.15.0
+          cache: npm
+          cache-dependency-path: scraper/package-lock.json
+    
+      - name: Install scraper dependencies
+        run: cd scraper/ && npm install
+        
+      # TODO: Run tests
+      - name: Run scraper
+        env:
+            AZAR_SERVER_URL: ${{secrets.AZAR_SERVER_URL}}
+            AZAR_USERNAME: ${{secrets.AZAR_USERNAME}}
+            AZAR_PASSWORD: ${{secrets.AZAR_PASSWORD}}
+        run: cd scraper && npm run start
+      
+      # TODO: Pass correct env variables
