@@ -1,7 +1,7 @@
 import { firefox } from "playwright";
 import type { EventFields } from "../types/index.js";
 import Scraper from "./Scraper.js";
-import { getDateFromStrings, now } from "./utils/index.js";
+import { getDateFromStrings, now, parsePrice } from "./utils/index.js";
 
 const PLACE_MONTH_TO_DATE_MONTH: any = {
   "enero": "january",
@@ -74,8 +74,7 @@ export default class ElUmbralDeLaPrimavera extends Scraper {
   async getPrice(page: any): Promise<number> {
     const priceString = await page.locator(':text("Precio:") + div')
       .textContent();
-    const numbersOnlyPrice = priceString.replace(/[^0-9.€]/g, "");
-    return Number(numbersOnlyPrice.split("€")[0]);
+    return parsePrice(priceString);
   }
 
   getUrl(page: any) {

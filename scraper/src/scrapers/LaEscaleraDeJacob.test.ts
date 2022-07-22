@@ -4,7 +4,6 @@ import LaEscaleraDeJacob from "./LaEscaleraDeJacob.js";
 const EXPECTED_EVENT_URL = 'https://www.laescaleradejacob.es/evento/872/soy-una-persona-horrible-';
 const EXPECTED_EVENT = {
   title: 'SOY UNA PERSONA HORRIBLE',
-  date: new Date('2022-07-15T20:00:00.000Z'),
   price: 10,
   url: 'https://www.laescaleradejacob.es/evento/872/soy-una-persona-horrible-',
   description: '\n' +
@@ -19,6 +18,6 @@ test('Processes a known event successfully', async ({ page }: { page: any }) => 
   await page.goto(EXPECTED_EVENT_URL);
 
   const processedEvent = await scraper.processEvent(page);
-
-  expect(processedEvent).toStrictEqual(EXPECTED_EVENT)
+  const { date, ...restOfEvent } = processedEvent; // Date changes all the time, so if we makes assertions on it, this test will be flaky
+  expect(restOfEvent).toStrictEqual(EXPECTED_EVENT)
 });

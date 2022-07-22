@@ -72,7 +72,9 @@ const populateDBWithDummyData = async () => {
   }
 };
 
-export default async function ({ populateWithDummyData = false }) {
+export default async function (
+  { populateWithDummyData } = { populateWithDummyData: false },
+) {
   console.log("Initializating database...");
   await ProviderDB.runQuery(`SET CLIENT_ENCODING TO 'LATIN9'`); // To store accents and so on, https://www.postgresql.org/docs/current/multibyte.html
   await ProviderDB.runQuery(Place.createTableQuery);

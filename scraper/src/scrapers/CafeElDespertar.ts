@@ -1,6 +1,6 @@
 import { firefox } from "playwright";
 import Scraper from "./Scraper.js";
-import { getDateFromStrings } from "./utils/index.js";
+import { getDateFromStrings, parsePrice } from "./utils/index.js";
 
 // We are asuming three letters per month...currently only `jun` is shown.
 const PLACE_MONTH_TO_DATE_MONTH: any = {
@@ -47,11 +47,7 @@ export default class CafeElDespertar extends Scraper {
   async getPrice(page: any): Promise<number> {
     const priceString = await page.locator(".mec-events-event-cost")
       .textContent();
-    const numbersOnlyPrice = priceString.replace(/[^0-9,€]/g, "").replace(
-      ",",
-      ".",
-    );
-    return Number(numbersOnlyPrice.split("€")[0]);
+    return parsePrice(priceString);
   }
 
   async getDescription(page: any): Promise<string> {
