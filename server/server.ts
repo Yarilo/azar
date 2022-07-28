@@ -3,7 +3,7 @@ import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import logger from "https://deno.land/x/oak_logger/mod.ts";
 import { ProviderDB } from "./providers/index.ts";
 import { auth, events, places } from "./routes/index.ts";
-import { initializeDatabase } from './utils';
+import { initializeDatabase } from "./utils";
 
 const SERVER_PORT = 80;
 
