@@ -4,7 +4,7 @@ import ElUmbralDeLaPrimavera from "./ElUmbralDeLaPrimavera.js";
 const EXPECTED_EVENT_URL = 'https://elumbraldeprimavera.com/evento/feliz-lunes/';
 const EXPECTED_EVENT = {
   title: 'FELIZ LUNES',
-  date: new Date('2022-07-22T22:00:00.000Z'),
+  date: new Date('2022-07-02T19:00:00.000Z'),
   price: 14,
   url: 'https://elumbraldeprimavera.com/evento/feliz-lunes/',
   description: 'Al despertar en su lunes libre, Sara descubre que su sueño se ha hecho realidad: le han ofrecido el papel protagonista de una película. Para celebrarlo, acudirá al cariño de los comentarios de su Instagram, el amor de su match de Tinder, y la compañía de sus YouTubers preferidos.',
