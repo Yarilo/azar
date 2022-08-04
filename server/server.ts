@@ -31,7 +31,8 @@ app.use(router.allowedMethods());
 // Serve client assets
 app.use(async (context, next) => {
   const { pathname } = context.request.url;
-  const path = pathname.includes("build") || pathname.includes("css")
+  const path = pathname.includes("build") || pathname.includes("css") ||
+      pathname.includes("svg") || pathname.includes("png")
     ? pathname
     : "/"; // @TODO: UGLY as big as my head, review
   try {
