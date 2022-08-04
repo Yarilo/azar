@@ -3,6 +3,7 @@
 
 	export let event;
 	// @TODO: Perhaps put an arrow
+	const priceEvent = event.price === 0 ? "Gratis" : `${event.price} €`;
 </script>
 
 {#if event}
@@ -15,7 +16,7 @@
 	<div>
 		<a href={event.url} target="_blank">{event.place.name}</a>
 		<p>{parseDate(event.date)}</p>
-		<p>{event.price} €</p>
+		<p>{priceEvent}</p>
 	</div>
 {/if}
 
