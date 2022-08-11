@@ -30,7 +30,7 @@ export default class Nave73 extends Scraper {
 
 
   async isOldEvent(page: any) {
-    await page.locator(":text('Comprar entradas')").click()
+    await page.locator("text=Comprar entradas").click()
     const isOld = await page.isVisible(":text('Lo sentimos')");
     await page.goBack();
     return isOld;
@@ -43,7 +43,7 @@ export default class Nave73 extends Scraper {
   }
 
   async getDate(page: any): Promise<Date> {
-    await page.locator(":text('Comprar entradas')").click()
+    await page.locator("text=Comprar entradas").click()
     const dateText = await page.locator('.date').first().textContent()
     const [_1, _dayOfWeek, day, _de, rawMonth, _de2, year, _2] = dateText.replace(/\s+/g, " ").split(" ");
     const month = PLACE_MONTH_TO_DATE_MONTH[rawMonth.toLowerCase()];
