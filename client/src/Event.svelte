@@ -4,7 +4,8 @@
 
 	export let event;
 	// @TODO: Perhaps put an arrow
-	const priceEvent = event.price === 0 ? "Gratis" : `${event.price} €`;
+	const priceEvent =
+		Number(event.price) === 0 ? "Gratis" : `${event.price} €`;
 </script>
 
 {#if event}
