@@ -1,6 +1,6 @@
 import { firefox } from "playwright";
 import Scraper from "./Scraper.js";
-import { getDateFromStrings, now } from "./utils/index.js";
+import { getDateFromStrings, getFirstParagraph, now } from "./utils/index.js";
 
 // We are asuming three letters per month...currently only `jun` is shown.
 const PLACE_MONTH_TO_DATE_MONTH: any = {
@@ -59,8 +59,8 @@ export default class LaEscaleraDeJacob extends Scraper {
 
   async getDescription(page: any) {
     const description = await page.locator(".description").first()
-      .textContent(); // @TODO: Take always the first paragraph only?
-    return description;
+      .textContent();
+    return getFirstParagraph(description);
   }
 
   async processEvent(page: any): Promise<any> {
