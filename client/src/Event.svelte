@@ -36,5 +36,6 @@
 	}
 	.event-description {
 		white-space: pre-line;
+		line-height: 1.5;
 	}
 </style>
