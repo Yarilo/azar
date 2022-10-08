@@ -41,6 +41,7 @@ export default class CafeElDespertar extends Scraper {
     const hour = await page.locator(".mec-single-event-time .mec-events-abbr")
       .textContent();
     const date = getDateFromStrings({ day, month, hour, year });
+    // @TODO: Should we convert time to UTC?
     return date;
   }
 
