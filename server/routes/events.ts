@@ -4,6 +4,7 @@ import { ProviderDB } from "../providers/index.ts";
 import { timestamp } from "../utils/index.ts";
 
 const NUMBER_OF_DAILY_EVENTS = 3; //@TODO: Move to constants;
+const UNIQUE_VIOLATION_ERROR = "23505";
 
 type SelectedEvent = any & {
   place: { name: string; website: string; address: string };
@@ -65,8 +66,17 @@ export default {
   add: async (context: any) => {
     const fields: Event.columns = await context.request.body({ type: "json" })
       .value;
-    await ProviderDB.insert(Event.tableName, fields);
-    context.response.status = Status.OK;
+    try {
+      await ProviderDB.insert(Event.tableName, fields);
+      context.response.status = Status.OK;
+    } catch (error) {
+      if (error?.fields.code === UNIQUE_VIOLATION_ERROR) {
+        context.response.status = Status.Conflict; // Duplicated resource
+      } else {
+        context.response.status = Status.InternalServerError;
+        console.error(`Error adding an event, ${error}`);
+      }
+    }
   },
   list: async (context: any) => {
     const events = await ProviderDB.find(

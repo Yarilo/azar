@@ -2,6 +2,8 @@ import type { EventFields, PlaceFields } from "../types/index.js";
 import { ProviderRequest } from "../providers/index.js";
 import { URLS } from "../constants.js";
 
+const CONFLICT = 409;
+
 abstract class Scraper {
   place_id: string;
   request: any;
@@ -25,17 +27,19 @@ abstract class Scraper {
         name: this.name,
       });
     } catch (error: any) {
-      console.log(
-        `Error saving the place, probably is already in db ${error.statusMessage || error
-        }`,
-      );
+      if (error.response?.status === CONFLICT) {
+        console.log(`Place is already in db, ${error} `);
+      } else {
+        console.log(`Error saving the place, ${error} `);
+      }
+
     }
 
     try {
       this.place_id = await this.getPlaceId(); // @TODO: This call is not needed if the one above succeeds
     } catch (error: any) {
       console.log(
-        `Error initializating place id, ${error.statusMessage || error}`,
+        `Error initializating place id, ${error.statusMessage || error} `,
       );
     }
   }
