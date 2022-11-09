@@ -1,7 +1,7 @@
 import {
   Client,
   ClientOptions,
-} from "https://deno.land/x/postgres@v0.16.1/mod.ts";
+} from "https://deno.land/x/postgres@v0.17.0/mod.ts";
 import { ChosenEvent, Event, Place, User } from "../models/index.ts";
 import { timestamp } from "../utils/index.ts";
 
