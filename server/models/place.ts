@@ -10,7 +10,7 @@ export interface columns {
   address: string;
 }
 
-export const createTableQuery = (`
+export const createTableQuery = `
   ${timestamp.sqlFunction()}
 
   CREATE TABLE IF NOT EXISTS ${tableName}(
@@ -22,6 +22,6 @@ export const createTableQuery = (`
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
   );
 
-  ${timestamp.trigger(tableName)}`);
+  ${timestamp.trigger(tableName)}`;
 
 // @TODO: Relationships

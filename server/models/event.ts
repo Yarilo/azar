@@ -13,7 +13,7 @@ export interface columns {
   place_id: number;
 }
 
-export const createTableQuery = (`
+export const createTableQuery = `
   ${timestamp.sqlFunction()}
  
   CREATE TABLE IF NOT EXISTS ${tableName}(
@@ -29,6 +29,6 @@ export const createTableQuery = (`
     CONSTRAINT fk_place FOREIGN KEY(place_id) REFERENCES places
   );
   
-  ${timestamp.trigger(tableName)}`);
+  ${timestamp.trigger(tableName)}`;
 
 // @TODO: Relationships
