@@ -1,7 +1,7 @@
 # Azar
 
 
-Three random live experiences every day: [Azar](https://azar.deno.dev/)
+Three random live experiences every day: [Azar](https://azar.deno.dev/) (currently not showing anything as the scrapper has been stopped).
 
 ## Description & Disclaimer
 
